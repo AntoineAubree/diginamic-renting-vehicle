@@ -46,6 +46,8 @@ public abstract class Vehicle {
 	private TypeVehicle typeVehicle;
 	@OneToMany(mappedBy = "vehicle")
 	private Set<Maintenance> maintenances = new HashSet<>();
+	@OneToMany(mappedBy = "vehicle")
+	private Set<Booking> bookings = new HashSet<>();
 
 	public Vehicle() {
 	}
@@ -124,7 +126,7 @@ public abstract class Vehicle {
 	public Set<Maintenance> getMaintenances() {
 		return maintenances;
 	}
-	
+
 	public void addMaintenance(Maintenance maintenance) {
 		this.getMaintenances().add(maintenance);
 		maintenance.setVehicle(this);
@@ -132,6 +134,14 @@ public abstract class Vehicle {
 
 	public void setMaintenances(Set<Maintenance> maintenances) {
 		this.maintenances = maintenances;
+	}
+
+	public Set<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(Set<Booking> bookings) {
+		this.bookings = bookings;
 	}
 
 }
