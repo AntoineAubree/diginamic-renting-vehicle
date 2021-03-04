@@ -394,6 +394,11 @@ public class Console {
 		
 		String textModifie = text;
 		
+		boolean startWithTag = false;
+		if (text.startsWith("<")) {
+			startWithTag = true;
+		}
+		
 		// Si le texte contient des images, on modifie les sources
 		if (text.contains("img") && text.contains("src")) {
 			Document doc = Jsoup.parse(text);
@@ -408,7 +413,12 @@ public class Console {
 					}
 				}
 			}
-			textModifie = doc.body().children().toString();
+			if (startWithTag) {
+				textModifie = doc.body().children().toString() +" " + doc.body().ownText();
+			}
+			else {
+				textModifie = doc.body().ownText()+" "+doc.body().children().toString();
+			}
 		}
 		
 		contentpane.append(textModifie);

@@ -61,13 +61,16 @@ public class ReflectUtils {
 			String methodName = methodWithParameter.substring(0, methodWithParameter.indexOf("("));
 			String parameter = methodWithParameter.substring(methodWithParameter.indexOf("(") + 1,
 					methodWithParameter.indexOf(")"));
-			Long id = Long.parseLong(parameter);
-
+			
 			Class<?> classe = getClass(className);
 			if (classe==null) {
 				ErrorManager.manage("La classe " + className + " n'existe pas.");
 			}
+			if (parameter.isEmpty()) {
+				callMethod(classe, methodName, null);
+			}
 			else {
+				Long id = Long.parseLong(parameter);	
 				callMethod(classe, methodName, id);
 			}
 		}
@@ -76,10 +79,15 @@ public class ReflectUtils {
 			String methodName = chaineInvocation.substring(0, chaineInvocation.indexOf("("));
 			String parameter = chaineInvocation.substring(chaineInvocation.indexOf("(") + 1,
 					chaineInvocation.indexOf(")"));
-			Long id = Long.parseLong(parameter);
 			
 			Class<?> classe = AbstractApplication.currentMenuService.getClass();
-			callMethod(classe, methodName, id);
+			if (parameter.isEmpty()) {
+				callMethod(classe, methodName, null);
+			}
+			else {
+				Long id = Long.parseLong(parameter);
+				callMethod(classe, methodName, id);
+			}
 		}
 	}
 
@@ -92,10 +100,10 @@ public class ReflectUtils {
 		Object obj = null;
 		try {
 			if (classe != null) {
-				Constructor<?> construct = classe.getConstructor(null);
+				Constructor<?> construct = classe.getConstructor();
 				construct.setAccessible(true);
 				if (construct != null) {
-					obj = construct.newInstance(null);
+					obj = construct.newInstance();
 				} else {
 					ErrorManager.manage("Le constructeur sans paramètre n'existe pas dans la classe " + classe.getName());
 				}
@@ -105,9 +113,18 @@ public class ReflectUtils {
 			ErrorManager.manage(msg, e);
 		}
 		try {
-			Method method = classe.getDeclaredMethod(methodName, Long.class);
-			method.setAccessible(true);
-			method.invoke(obj, id);
+			Method method = null;
+			if (id!=null) {
+				method = classe.getDeclaredMethod(methodName, Long.class);
+				method.setAccessible(true);
+				method.invoke(obj, id);
+			}
+			else {
+				method = classe.getDeclaredMethod(methodName);
+				method.setAccessible(true);
+				method.invoke(obj);
+			}
+			
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 			ErrorManager.manage(e.getMessage(), e);
