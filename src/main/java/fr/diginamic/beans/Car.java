@@ -24,17 +24,6 @@ public class Car extends Model {
 		this.placesNumber = placesNumber;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Car [placesNumber=");
-		builder.append(placesNumber);
-		builder.append(", toString()=");
-		builder.append(super.toString());
-		builder.append("]");
-		return builder.toString();
-	}
-
 	public int getPlacesNumber() {
 		return placesNumber;
 	}

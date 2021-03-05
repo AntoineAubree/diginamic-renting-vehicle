@@ -27,7 +27,7 @@ public class Vehicle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Long id;
 	@Column(name = "number_plate", length = 12, nullable = false, unique = true)
 	private String numberPlate;
 	@Column(name = "mileage")
@@ -70,11 +70,11 @@ public class Vehicle {
 		return builder.toString();
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

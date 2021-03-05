@@ -8,8 +8,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,16 +25,15 @@ public class TypeVehicle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Long id;
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	@Column(name = "daily_price")
 	private float dailyPrince;
 	@Column(name = "guarantee")
 	private float guarantee;
-	@Enumerated(EnumType.STRING)
 	@Column(name = "category_vehicle", length = 7, nullable = false)
-	private CategoryVehicle categoryVehicle;
+	private String categoryVehicle;
 	@OneToMany(mappedBy = "typeVehicle")
 	private Set<Model> models = new HashSet<>();
 
@@ -47,7 +44,7 @@ public class TypeVehicle {
 		this.name = name;
 		this.dailyPrince = dailyPrince;
 		this.guarantee = guarantee;
-		this.categoryVehicle = categoryVehicle;
+		this.categoryVehicle = categoryVehicle.getName();
 	}
 
 	@Override
@@ -67,11 +64,11 @@ public class TypeVehicle {
 		return builder.toString();
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -99,12 +96,12 @@ public class TypeVehicle {
 		this.guarantee = guarantee;
 	}
 
-	public CategoryVehicle getCategoryVehicle() {
+	public String getCategoryVehicle() {
 		return categoryVehicle;
 	}
 
 	public void setCategoryVehicle(CategoryVehicle categoryVehicle) {
-		this.categoryVehicle = categoryVehicle;
+		this.categoryVehicle = categoryVehicle.getName();
 	}
 
 	public Set<Model> getModels() {

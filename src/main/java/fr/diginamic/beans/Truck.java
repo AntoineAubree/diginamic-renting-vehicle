@@ -24,17 +24,6 @@ public class Truck extends Model {
 		this.volume = volume;
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Truck [volume=");
-		builder.append(volume);
-		builder.append(", toString()=");
-		builder.append(super.toString());
-		builder.append("]");
-		return builder.toString();
-	}
-
 	public int getVolume() {
 		return volume;
 	}

@@ -17,18 +17,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import fr.diginamic.composants.ui.Selectable;
+
 /**
  * @author Antoine
  *
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Model {
+public abstract class Model implements Selectable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Long id;
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 	@ManyToOne
@@ -50,21 +52,19 @@ public abstract class Model {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Model [id=");
-		builder.append(id);
-		builder.append(", name=");
+		builder.append(getCategory());
+		builder.append(" | ");
+		builder.append(make.getName());
+		builder.append(" | ");
 		builder.append(name);
-		builder.append(", make=");
-		builder.append(make);
-		builder.append("]");
 		return builder.toString();
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

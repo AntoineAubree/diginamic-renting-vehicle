@@ -12,8 +12,13 @@ public class VehicleDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
 
+	public Vehicle findById(Long id) {
+		Vehicle vehicle = em.find(Vehicle.class, id);
+		return vehicle;
+	}
+	
 	public List<Vehicle> findAll() {
-		TypedQuery<Vehicle> query = em.createQuery("SELECT v FROM Vehicle v", Vehicle.class);
+		TypedQuery<Vehicle> query = em.createQuery("SELECT v FROM Vehicle v JOIN v.model mo JOIN mo.typeVehicle t JOIN mo.make ma ORDER BY t.categoryVehicle, ma.name, mo.name", Vehicle.class);
 		List<Vehicle> vehicles = query.getResultList();
 		return vehicles;
 	}
@@ -35,6 +40,13 @@ public class VehicleDao extends AbstractDao {
 		} else {
 			return false;
 		}
+	}
+	
+	public void update(Vehicle vehicle) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.merge(vehicle);
+		transaction.commit();
 	}
 
 }

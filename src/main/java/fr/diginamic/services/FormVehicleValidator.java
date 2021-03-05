@@ -12,9 +12,10 @@ import fr.diginamic.dao.VehicleDao;
  * @author rbonn
  *
  */
-public class FormAddVehicleValidator extends FormValidator {
-	
+public class FormVehicleValidator extends FormValidator {
+
 	VehicleDao vehicleDao = new VehicleDao();
+	private String numberPlate;
 
 	@Override
 	public boolean validate(Form form) {
@@ -24,7 +25,8 @@ public class FormAddVehicleValidator extends FormValidator {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
 			return false;
 		}
-		if (numberPlatePieces[0].length() != 2 || numberPlatePieces[1].length() != 3 || numberPlatePieces[2].length() != 2) {
+		if (numberPlatePieces[0].length() != 2 || numberPlatePieces[1].length() != 3
+				|| numberPlatePieces[2].length() != 2) {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
 			return false;
 		}
@@ -34,12 +36,20 @@ public class FormAddVehicleValidator extends FormValidator {
 				return false;
 			}
 		}
-		boolean numberPlateavailable = vehicleDao.checkNumberPlate(numberPLate);
-		if (!numberPlateavailable) {
+		boolean numberPlateAvailable = vehicleDao.checkNumberPlate(numberPLate);
+		if (!numberPlateAvailable && !numberPLate.equals(this.numberPlate)) {
 			console.alert("Cette plaque d'immatriculation est déjà renseignée");
 			return false;
 		}
 		return true;
+	}
+
+	public String getNumberPlate() {
+		return numberPlate;
+	}
+
+	public void setNumberPlate(String numberPlate) {
+		this.numberPlate = numberPlate;
 	}
 
 }

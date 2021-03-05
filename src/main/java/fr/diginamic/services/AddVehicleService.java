@@ -43,12 +43,12 @@ public class AddVehicleService extends MenuService {
 
 	protected void setVehicleData(Long id) {
 		Form form = new Form();
-		form.addInput(new TextField("PLaque d'immatriculation:", "numberPlate"));
+		form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate"));
 		form.addInput(new TextField("Kilométrage:", "mileage", "0"));
-		FormAddVehicleValidator validator = new FormAddVehicleValidator();
+		FormVehicleValidator validator = new FormVehicleValidator();
 		boolean valide = console.input("Saisissez les informations du véhicules", form, validator);
 		if (valide) {
-			Model model = modelDao.findById(id.intValue());
+			Model model = modelDao.findById(id);
 			Vehicle vehicle = new Vehicle(form.getValue("numberPlate").toUpperCase(), Float.parseFloat(form.getValue("mileage")));
 			vehicle.setModel(model);
 			vehicleDao.insert(vehicle);

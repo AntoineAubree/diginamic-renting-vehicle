@@ -23,7 +23,7 @@ public class Payment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Long id;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "type_payment", length = 15, nullable = false)
 	private TypePayment typePayment;
@@ -45,11 +45,11 @@ public class Payment {
 		return builder.toString();
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
