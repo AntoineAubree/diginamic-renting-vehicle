@@ -9,15 +9,10 @@ public class TypeVehiculeDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
 
-	public TypeVehiculeDao() {
-	}
-
 	public void insert(TypeVehicle typeVehicle) {
 		EntityTransaction transaction = em.getTransaction();
 		transaction.begin();
-		
 		em.persist(typeVehicle);
-
 		transaction.commit();
 	}
 

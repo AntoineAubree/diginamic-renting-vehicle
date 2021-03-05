@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 import fr.diginamic.composants.error.ErrorManager;
-import fr.diginamic.composants.validator.FormValidator;
 
 /** Formulaire
  * @author RichardBONNAMY

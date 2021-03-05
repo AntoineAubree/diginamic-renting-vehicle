@@ -11,7 +11,7 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-public class Car extends Vehicle {
+public class Car extends Model {
 
 	@Column(name = "places_number")
 	private int placesNumber;
@@ -41,6 +41,10 @@ public class Car extends Vehicle {
 
 	public void setPlacesNumber(int placesNumber) {
 		this.placesNumber = placesNumber;
+	}
+
+	public String getCategory() {
+		return "Voiture";
 	}
 
 }

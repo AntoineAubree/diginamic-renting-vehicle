@@ -1,9 +1,8 @@
 package fr.diginamic;
 
-import fr.diginamic.beans.CategoryVehicle;
-import fr.diginamic.beans.TypeVehicle;
 import fr.diginamic.composants.AbstractApplication;
-import fr.diginamic.dao.TypeVehiculeDao;
+import fr.diginamic.services.AddVehicleService;
+import fr.diginamic.services.DisplayVehiclesService;
 
 /**
  * Fenêtre principale qui porte les principaux composants graphiques de
@@ -29,15 +28,13 @@ public class Application extends AbstractApplication {
 	}
 
 	/**
-	 * Code principal
 	 * 
 	 */
 	public void main() {
-		TypeVehicle type1 = new TypeVehicle();
-		type1.setName("SUV");
-		type1.setCategoryVehicle(CategoryVehicle.CAR);
 
-		TypeVehiculeDao typeVehicleDao = new TypeVehiculeDao();
-		typeVehicleDao.insert(type1);
+		addMenu(1, "Véhicule");
+
+		addMenuOption(1, "Afficher les véhicules", new DisplayVehiclesService());
+		addMenuOption(1, "Ajouter un véhicule", new AddVehicleService());
 	}
 }

@@ -32,21 +32,21 @@ public class TypeVehicle {
 	private String name;
 	@Column(name = "daily_price")
 	private float dailyPrince;
-	@Column(name = "guarentee")
-	private float guarentee;
+	@Column(name = "guarantee")
+	private float guarantee;
 	@Enumerated(EnumType.STRING)
-	@Column(name = "category_vehicle", length = 5, nullable = false)
+	@Column(name = "category_vehicle", length = 7, nullable = false)
 	private CategoryVehicle categoryVehicle;
 	@OneToMany(mappedBy = "typeVehicle")
-	private Set<Vehicle> vehicles = new HashSet<>();
+	private Set<Model> models = new HashSet<>();
 
 	public TypeVehicle() {
 	}
 
-	public TypeVehicle(String name, float dailyPrince, float guarentee, CategoryVehicle categoryVehicle) {
+	public TypeVehicle(String name, float dailyPrince, float guarantee, CategoryVehicle categoryVehicle) {
 		this.name = name;
 		this.dailyPrince = dailyPrince;
-		this.guarentee = guarentee;
+		this.guarantee = guarantee;
 		this.categoryVehicle = categoryVehicle;
 	}
 
@@ -59,8 +59,8 @@ public class TypeVehicle {
 		builder.append(name);
 		builder.append(", dailyPrince=");
 		builder.append(dailyPrince);
-		builder.append(", guarentee=");
-		builder.append(guarentee);
+		builder.append(", guarantee=");
+		builder.append(guarantee);
 		builder.append(", categoryVehicle=");
 		builder.append(categoryVehicle);
 		builder.append("]");
@@ -91,12 +91,12 @@ public class TypeVehicle {
 		this.dailyPrince = dailyPrince;
 	}
 
-	public float getGuarentee() {
-		return guarentee;
+	public float getGuarantee() {
+		return guarantee;
 	}
 
-	public void setGuarentee(float guarentee) {
-		this.guarentee = guarentee;
+	public void setGuarantee(float guarantee) {
+		this.guarantee = guarantee;
 	}
 
 	public CategoryVehicle getCategoryVehicle() {
@@ -107,17 +107,12 @@ public class TypeVehicle {
 		this.categoryVehicle = categoryVehicle;
 	}
 
-	public Set<Vehicle> getVehicles() {
-		return vehicles;
-	}
-	
-	public void addVehicle(Vehicle vehicle) {
-		this.getVehicles().add(vehicle);
-		vehicle.setTypeVehicle(this);
+	public Set<Model> getModels() {
+		return models;
 	}
 
-	public void setVehicles(Set<Vehicle> vehicles) {
-		this.vehicles = vehicles;
+	public void setModels(Set<Model> models) {
+		this.models = models;
 	}
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.Entity;
  *
  */
 @Entity
-public class Truck extends Vehicle {
+public class Truck extends Model {
 
 	@Column(name = "volume")
 	private int volume;
@@ -41,6 +41,10 @@ public class Truck extends Vehicle {
 
 	public void setVolume(int volume) {
 		this.volume = volume;
+	}
+	
+	public String getCategory() {
+		return "Camion";
 	}
 
 }

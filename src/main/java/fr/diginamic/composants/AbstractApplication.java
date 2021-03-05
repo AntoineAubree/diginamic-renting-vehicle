@@ -19,8 +19,6 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
-import fr.diginamic.composants.reflect.ReflectUtils;
-
 /** Application mère de type SWING.
  * @author RichardBONNAMY
  *
