@@ -3,6 +3,7 @@ package fr.diginamic.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.diginamic.beans.Maintenance;
 import fr.diginamic.beans.Model;
 import fr.diginamic.beans.StatusVehicle;
 import fr.diginamic.beans.Vehicle;
@@ -12,14 +13,16 @@ import fr.diginamic.composants.ui.DateField;
 import fr.diginamic.composants.ui.Form;
 import fr.diginamic.composants.ui.Selectable;
 import fr.diginamic.composants.ui.TextField;
+import fr.diginamic.dao.MaintenanceDao;
 import fr.diginamic.dao.ModelDao;
 import fr.diginamic.dao.VehicleDao;
+import fr.diginamic.utils.LocalDateUtils;
 
 public class DisplayVehiclesService extends MenuService {
 
 	ModelDao modelDao = new ModelDao();
 	VehicleDao vehicleDao = new VehicleDao();
-//	MaintenanceDao maintenanceDao = new MaintenanceDao();
+	MaintenanceDao maintenanceDao = new MaintenanceDao();
 
 	@Override
 	public void traitement() {
@@ -58,7 +61,10 @@ public class DisplayVehiclesService extends MenuService {
 			FormMaintenanceValidator validator = new FormMaintenanceValidator();
 			boolean valide = console.input("Mettre en maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
 			if (valide) {
-				System.out.println("valider");
+				Maintenance maintenance = new Maintenance(LocalDateUtils.getDate(form.getValue("startDate")), vehicle);
+				vehicle.addMaintenance(maintenance);
+				vehicle.setStatusVehicle(StatusVehicle.MAINTENANCE);
+				maintenanceDao.insert(maintenance);
 				traitement();
 			}
 		} else if (vehicle.getStatusVehicle().equals(StatusVehicle.MAINTENANCE.getWording())) {
