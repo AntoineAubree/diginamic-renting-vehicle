@@ -8,8 +8,6 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,11 +28,12 @@ public class Vehicle {
 	private Long id;
 	@Column(name = "number_plate", length = 12, nullable = false, unique = true)
 	private String numberPlate;
+	@Column(name = "comment", length = 300)
+	private String comment;
 	@Column(name = "mileage")
 	private float mileage;
-	@Enumerated(EnumType.STRING)
 	@Column(name = "status_vehicle", length = 15, nullable = false)
-	private StatusVehicle statusVehicle;
+	private String statusVehicle;
 	@ManyToOne
 	@JoinColumn(name = "id_model", nullable = false)
 	private Model model;
@@ -44,13 +43,13 @@ public class Vehicle {
 	private Set<Booking> bookings = new HashSet<>();
 
 	public Vehicle() {
-		this.statusVehicle = StatusVehicle.AVAILABLE;
+		this.statusVehicle = StatusVehicle.AVAILABLE.getWording();
 	}
 
 	public Vehicle(String numberPlate, float mileage) {
 		this.numberPlate = numberPlate;
 		this.mileage = mileage;
-		this.statusVehicle = StatusVehicle.AVAILABLE;
+		this.statusVehicle = StatusVehicle.AVAILABLE.getWording();
 	}
 
 	@Override
@@ -94,12 +93,12 @@ public class Vehicle {
 		this.mileage = mileage;
 	}
 
-	public StatusVehicle getStatusVehicle() {
+	public String getStatusVehicle() {
 		return statusVehicle;
 	}
 
 	public void setStatusVehicle(StatusVehicle statusVehicle) {
-		this.statusVehicle = statusVehicle;
+		this.statusVehicle = statusVehicle.getWording();
 	}
 
 	public Model getModel() {
@@ -129,6 +128,14 @@ public class Vehicle {
 
 	public void setBookings(Set<Booking> bookings) {
 		this.bookings = bookings;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

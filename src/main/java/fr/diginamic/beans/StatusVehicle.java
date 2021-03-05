@@ -9,6 +9,17 @@ package fr.diginamic.beans;
  */
 public enum StatusVehicle {
 	
-	AVAILABLE, RENTED, MAINTENANCE;
+	AVAILABLE("disponible"), RENTED("en location"), MAINTENANCE("en maintenance");
+
+	private String wording;
+
+	private StatusVehicle(String wording) {
+		this.wording = wording;
+	}
+
+	public String getWording() {
+		return wording;
+	}
+
 
 }

@@ -49,4 +49,11 @@ public class VehicleDao extends AbstractDao {
 		transaction.commit();
 	}
 
+	public void delete(Vehicle vehicle) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.remove(vehicle);
+		transaction.commit();
+	}
+
 }

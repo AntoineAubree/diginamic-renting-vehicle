@@ -9,31 +9,16 @@ package fr.diginamic.beans;
  */
 public enum CategoryVehicle {
 
-	CAR(1L, "Voiture"), TRUCK(2L, "Camion");
+	CAR("Voiture"), TRUCK("Camion");
 
-	private Long id;
-	private String name;
+	private String wording;
 
-	private CategoryVehicle(Long id, String name) {
-		this.id = id;
-		this.name = name;
+	private CategoryVehicle(String wording) {
+		this.wording = wording;
 	}
 
-	public static CategoryVehicle getInstanceById(Long id) {
-		for (CategoryVehicle categoryVehicle : CategoryVehicle.values()) {
-			if (categoryVehicle.getId() == id) {
-				return categoryVehicle;
-			}
-		}
-		return null;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public Long getId() {
-		return this.id;
+	public String getWording() {
+		return wording;
 	}
 
 }

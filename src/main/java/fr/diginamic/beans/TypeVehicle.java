@@ -44,7 +44,7 @@ public class TypeVehicle {
 		this.name = name;
 		this.dailyPrince = dailyPrince;
 		this.guarantee = guarantee;
-		this.categoryVehicle = categoryVehicle.getName();
+		this.categoryVehicle = categoryVehicle.getWording();
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class TypeVehicle {
 	}
 
 	public void setCategoryVehicle(CategoryVehicle categoryVehicle) {
-		this.categoryVehicle = categoryVehicle.getName();
+		this.categoryVehicle = categoryVehicle.getWording();
 	}
 
 	public Set<Model> getModels() {
