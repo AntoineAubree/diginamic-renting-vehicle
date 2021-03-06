@@ -38,7 +38,7 @@ public class DisplayVehiclesService extends MenuService {
 			html += "<tr>" 
 					+ "  <td><a class='btn-blue' href='updateVehicle(" + vehicle.getId() + ")'><img width=25 src='images/pencil-blue-xs.png'></a></td>"
 					+ "  <td><a class='btn-red' href='deleteVehicle(" + vehicle.getId() + ")'><img width=25 src='images/trash-red-xs.png'></a></td>"
-					+ "  <td><a class='btn-red' href='maintenanceVehicle(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></td>"
+					+ "  <td><a class='btn-red' href='putVehicleInMaintenance(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></td>"
 					+ "  <td width='150px'>" + vehicle.getModel().getCategory() + "</td>" 
 					+ "  <td width='150px'>" + vehicle.getModel().getTypeVehicle().getName() + "</td>" 
 					+ "  <td width='150px'>" + vehicle.getModel().getMake().getName() + "</td>"
@@ -52,7 +52,7 @@ public class DisplayVehiclesService extends MenuService {
 		console.print(html);
 	}
 
-	protected void maintenanceVehicle(Long id) {
+	protected void putVehicleInMaintenance(Long id) {
 		Vehicle vehicle = vehicleDao.findById(id);
 		
 		Form form = new Form();
@@ -62,8 +62,7 @@ public class DisplayVehiclesService extends MenuService {
 			boolean valide = console.input("Mettre en maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
 			if (valide) {
 				Maintenance maintenance = new Maintenance(LocalDateUtils.getDate(form.getValue("startDate")), vehicle);
-				vehicle.addMaintenance(maintenance);
-				vehicle.setStatusVehicle(StatusVehicle.MAINTENANCE);
+				maintenance.setVehicle(vehicle);
 				maintenanceDao.insert(maintenance);
 				traitement();
 			}

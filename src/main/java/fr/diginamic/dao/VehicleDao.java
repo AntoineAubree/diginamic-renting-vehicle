@@ -6,12 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
-import fr.diginamic.beans.Maintenance;
+import fr.diginamic.beans.StatusVehicle;
 import fr.diginamic.beans.Vehicle;
 
 public class VehicleDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
+	
+	MaintenanceDao maintenanceDao = new MaintenanceDao(em);
 
 	public VehicleDao() {
 	}
@@ -57,15 +59,17 @@ public class VehicleDao extends AbstractDao {
 		transaction.begin();
 		em.merge(vehicle);
 		transaction.commit();
-
 	}
-	public void update(Maintenance maintenance) {
-		em.merge(maintenance.getVehicle());
+
+	public void putInMaintenance(Vehicle vehicle) {
+		vehicle.setStatusVehicle(StatusVehicle.MAINTENANCE);;
+		em.merge(vehicle);
 	}
 
 	public void delete(Vehicle vehicle) {
 		EntityTransaction transaction = em.getTransaction();
 		transaction.begin();
+		maintenanceDao.deleteFromVehicle(vehicle);
 		em.remove(vehicle);
 		transaction.commit();
 	}
