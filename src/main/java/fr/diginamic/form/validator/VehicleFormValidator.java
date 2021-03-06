@@ -1,10 +1,9 @@
 package fr.diginamic.form.validator;
 
-import java.util.regex.Pattern;
-
 import fr.diginamic.composants.ui.Form;
 import fr.diginamic.composants.validator.FormValidator;
 import fr.diginamic.dao.VehicleDao;
+import fr.diginamic.utils.RegexUtils;
 
 /**
  * validateur associé au formulaire
@@ -25,14 +24,13 @@ public class VehicleFormValidator extends FormValidator {
 		if (numberPlatePieces.length != 3) {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
 			return false;
-		}
-		if (numberPlatePieces[0].length() != 2 || numberPlatePieces[1].length() != 3
+		} else if (numberPlatePieces[0].length() != 2 || numberPlatePieces[1].length() != 3
 				|| numberPlatePieces[2].length() != 2) {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
 			return false;
 		}
 		for (String string : numberPlatePieces) {
-			if (!Pattern.matches("^[A-Z0-9]*$", string)) {
+			if (!RegexUtils.containsOnlyIntegerOrUppercaseLetter(string)) {
 				console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
 				return false;
 			}
@@ -41,12 +39,10 @@ public class VehicleFormValidator extends FormValidator {
 		if (!numberPlateAvailable && !numberPLate.equals(this.numberPlate)) {
 			console.alert("Cette plaque d'immatriculation est déjà renseignée");
 			return false;
-		}
-		if (mileage.isEmpty()) {
+		} else if (mileage.isEmpty()) {
 			console.alert("Le kilométragde doit être renseigné");
 			return false;
-		}
-		if (!Pattern.matches("^([+]?\\d*\\.?\\d*)$", mileage)) {
+		} else if (!RegexUtils.isPositiveFloat(mileage)) {
 			console.alert("Le kilométragde doit être positif");
 			return false;
 		}

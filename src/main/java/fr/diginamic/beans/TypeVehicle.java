@@ -3,8 +3,8 @@
  */
 package fr.diginamic.beans;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +35,7 @@ public class TypeVehicle {
 	@Column(name = "category_vehicle", length = 7, nullable = false)
 	private String categoryVehicle;
 	@OneToMany(mappedBy = "typeVehicle")
-	private Set<Model> models = new HashSet<>();
+	private List<Model> models = new ArrayList<>();
 
 	public TypeVehicle() {
 	}
@@ -104,11 +104,11 @@ public class TypeVehicle {
 		this.categoryVehicle = categoryVehicle.getWording();
 	}
 
-	public Set<Model> getModels() {
+	public List<Model> getModels() {
 		return models;
 	}
 
-	public void setModels(Set<Model> models) {
+	public void setModels(List<Model> models) {
 		this.models = models;
 	}
 

@@ -24,14 +24,14 @@ public class AddVehicle extends MenuService {
 		console.clear();
 		console.print("<h1 class='bg-green'><center>Ajouter un véhicule</center></h1>");
 		console.print("<h2 class='bg-green'><center>Sélectionnez le modèle</center></h2>");
-		console.print("<p>Si le modèle n'est pas dans la liste, <a class='btn-blue' href='#'>cliquer ici</a></p>");
+		console.print("<p>Si le modèle n'est pas dans la liste, <a href='#'>cliquer ici</a></p>");
 		console.print("<br>");
 
 		String html = "<table cellspacing=0>"
 				+ "<tr class='bg-green'><td>&nbsp;</td><td>Catégorie</td><td>Marque</td><td>Modèle</td><td>Type</td></tr>";
 		for (Model model : models) {
 			html += "<tr>" 
-					+ "  <td><a class='btn-blue' href='addVehicle(" + model.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
+					+ "  <td><a class='btn-green' href='addVehicle(" + model.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
 					+ "  <td width='150px'>" + model.getCategory() + "</td>" 
 					+ "  <td width='150px'>" + model.getMake().getName() + "</td>"
 					+ "  <td width='150px'>" + model.getName() + "</td>" 

@@ -3,8 +3,8 @@
  */
 package fr.diginamic.beans;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +27,7 @@ public class Make {
 	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 	@OneToMany(mappedBy = "make")
-	private Set<Model> models = new HashSet<>();
+	private List<Model> models = new ArrayList<>();
 
 	public Make() {
 	}
@@ -63,7 +63,7 @@ public class Make {
 		this.name = name;
 	}
 
-	public Set<Model> getModels() {
+	public List<Model> getModels() {
 		return models;
 	}
 
@@ -72,7 +72,7 @@ public class Make {
 		model.setMake(this);
 	}
 
-	public void setModels(Set<Model> models) {
+	public void setModels(List<Model> models) {
 		this.models = models;
 	}
 

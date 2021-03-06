@@ -64,15 +64,21 @@ public class DisplayVehicle extends MenuService {
 	}
 
 	private void removeVehicleFromMaintenance(Vehicle vehicle) {
+		Maintenance maintenance = vehicle.getMaintenances().get(vehicle.getMaintenances().size() - 1);
 		Form form = new Form();
 		form.addInput(new DateField("Date de fin de maintenance:", "finalDate"));
 		form.addInput(new TextField("Coût des réparations:", "reparationCost", "0"));
 		RemoveVehicleFromMaintenanceFormValidator validator = new RemoveVehicleFromMaintenanceFormValidator();
+		validator.setMaintenance(maintenance);
 		boolean valide = console.input("Sortir de maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
 		if (valide) {
+			maintenance.setReparationCost(Float.parseFloat(form.getValue("reparationCost")));
+			maintenance.setFinalDate(LocalDateUtils.getDate(form.getValue("finalDate")));
+			maintenanceDao.finishMaintenance(maintenance);
 			traitement();
 		}
 	}
+
 
 	private void putVehicleInMaintenance(Vehicle vehicle) {
 		Form form = new Form();

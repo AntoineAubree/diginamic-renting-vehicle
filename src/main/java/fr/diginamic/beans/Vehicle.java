@@ -3,8 +3,8 @@
  */
 package fr.diginamic.beans;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,9 +38,9 @@ public class Vehicle {
 	@JoinColumn(name = "id_model", nullable = false)
 	private Model model;
 	@OneToMany(mappedBy = "vehicle")
-	private Set<Maintenance> maintenances = new HashSet<>();
+	private List<Maintenance> maintenances = new ArrayList<>();
 	@OneToMany(mappedBy = "vehicle")
-	private Set<Booking> bookings = new HashSet<>();
+	private List<Booking> bookings = new ArrayList<>();
 
 	public Vehicle() {
 		this.statusVehicle = StatusVehicle.AVAILABLE.getWording();
@@ -109,7 +109,7 @@ public class Vehicle {
 		this.model = model;
 	}
 
-	public Set<Maintenance> getMaintenances() {
+	public List<Maintenance> getMaintenances() {
 		return maintenances;
 	}
 
@@ -118,15 +118,15 @@ public class Vehicle {
 		maintenance.setVehicle(this);
 	}
 
-	public void setMaintenances(Set<Maintenance> maintenances) {
+	public void setMaintenances(List<Maintenance> maintenances) {
 		this.maintenances = maintenances;
 	}
 
-	public Set<Booking> getBookings() {
+	public List<Booking> getBookings() {
 		return bookings;
 	}
 
-	public void setBookings(Set<Booking> bookings) {
+	public void setBookings(List<Booking> bookings) {
 		this.bookings = bookings;
 	}
 

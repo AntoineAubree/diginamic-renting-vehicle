@@ -32,4 +32,13 @@ public class MaintenanceDao extends AbstractDao {
 		}
 	}
 
+	public void finishMaintenance(Maintenance maintenance) {
+		VehicleDao vehicleDao = new VehicleDao(em);
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.merge(maintenance);
+		vehicleDao.removeFromMaitenance(maintenance.getVehicle());
+		transaction.commit();
+	}
+
 }

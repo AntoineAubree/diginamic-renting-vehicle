@@ -41,8 +41,6 @@ public class Maintenance {
 		this.startDate = startDate;
 		this.vehicle = vehicle;
 	}
-	
-	
 
 	@Override
 	public String toString() {

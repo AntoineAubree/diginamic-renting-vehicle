@@ -27,7 +27,7 @@ public class VehicleDao extends AbstractDao {
 
 	public List<Vehicle> findAll() {
 		TypedQuery<Vehicle> query = em.createQuery(
-				"SELECT v FROM Vehicle v JOIN v.model mo JOIN mo.typeVehicle t JOIN mo.make ma ORDER BY t.categoryVehicle, ma.name, mo.name",
+				"SELECT v FROM Vehicle v JOIN v.model mo JOIN mo.typeVehicle t JOIN mo.make ma ORDER BY t.categoryVehicle, t.name, ma.name, mo.name",
 				Vehicle.class);
 		List<Vehicle> vehicles = query.getResultList();
 		return vehicles;
@@ -61,6 +61,11 @@ public class VehicleDao extends AbstractDao {
 
 	public void putInMaintenance(Vehicle vehicle) {
 		vehicle.setStatusVehicle(StatusVehicle.MAINTENANCE);;
+		em.merge(vehicle);
+	}
+
+	public void removeFromMaitenance(Vehicle vehicle) {
+		vehicle.setStatusVehicle(StatusVehicle.AVAILABLE);;
 		em.merge(vehicle);
 	}
 

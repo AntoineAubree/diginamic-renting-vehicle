@@ -3,8 +3,8 @@
  */
 package fr.diginamic.beans;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -36,9 +36,9 @@ public class Client {
 	@Embedded
 	private Address address;
 	@OneToMany(mappedBy = "client")
-	private Set<Receipt> receipts = new HashSet<>();
+	private List<Receipt> receipts = new ArrayList<>();
 	@OneToMany(mappedBy = "client")
-	private Set<Booking> booginks = new HashSet<>();
+	private List<Booking> booginks = new ArrayList<>();
 
 	public Client() {
 	}
@@ -115,19 +115,19 @@ public class Client {
 		this.address = address;
 	}
 
-	public Set<Receipt> getReceipts() {
+	public List<Receipt> getReceipts() {
 		return receipts;
 	}
 
-	public void setReceipts(Set<Receipt> receipts) {
+	public void setReceipts(List<Receipt> receipts) {
 		this.receipts = receipts;
 	}
 
-	public Set<Booking> getBooginks() {
+	public List<Booking> getBooginks() {
 		return booginks;
 	}
 
-	public void setBooginks(Set<Booking> booginks) {
+	public void setBooginks(List<Booking> booginks) {
 		this.booginks = booginks;
 	}
 

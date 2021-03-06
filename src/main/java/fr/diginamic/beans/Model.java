@@ -3,8 +3,8 @@
  */
 package fr.diginamic.beans;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +37,7 @@ public abstract class Model implements Selectable {
 	@JoinColumn(name = "id_make", nullable = false)
 	private Make make;
 	@OneToMany(mappedBy = "model")
-	private Set<Vehicle> vehicles = new HashSet<>();
+	private List<Vehicle> vehicles = new ArrayList<>();
 	@ManyToOne
 	@JoinColumn(name = "id_type_vehicle", nullable = false)
 	private TypeVehicle typeVehicle;
@@ -84,7 +84,7 @@ public abstract class Model implements Selectable {
 		this.make = make;
 	}
 
-	public Set<Vehicle> getVehicles() {
+	public List<Vehicle> getVehicles() {
 		return vehicles;
 	}
 
@@ -93,7 +93,7 @@ public abstract class Model implements Selectable {
 		vehicle.setModel(this);
 	}
 
-	public void setVehicles(Set<Vehicle> vehicles) {
+	public void setVehicles(List<Vehicle> vehicles) {
 		this.vehicles = vehicles;
 	}
 
