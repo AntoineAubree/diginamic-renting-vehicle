@@ -1,8 +1,8 @@
 package fr.diginamic;
 
 import fr.diginamic.composants.AbstractApplication;
-import fr.diginamic.services.AddVehicleService;
-import fr.diginamic.services.DisplayVehiclesService;
+import fr.diginamic.ihm.AddVehicle;
+import fr.diginamic.ihm.DisplayVehicle;
 
 /**
  * Fenêtre principale qui porte les principaux composants graphiques de
@@ -34,7 +34,7 @@ public class Application extends AbstractApplication {
 
 		addMenu(1, "Véhicule");
 
-		addMenuOption(1, "Afficher les véhicules", new DisplayVehiclesService());
-		addMenuOption(1, "Ajouter un véhicule", new AddVehicleService());
+		addMenuOption(1, "Afficher les véhicules", new DisplayVehicle());
+		addMenuOption(1, "Ajouter un véhicule", new AddVehicle());
 	}
 }

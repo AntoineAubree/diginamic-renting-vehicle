@@ -1,4 +1,4 @@
-package fr.diginamic.services;
+package fr.diginamic.ihm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,12 @@ import fr.diginamic.composants.ui.TextField;
 import fr.diginamic.dao.MaintenanceDao;
 import fr.diginamic.dao.ModelDao;
 import fr.diginamic.dao.VehicleDao;
+import fr.diginamic.form.validator.RemoveVehicleFromMaintenanceFormValidator;
+import fr.diginamic.form.validator.PutVehicleInMaintenanceFormValidator;
+import fr.diginamic.form.validator.VehicleFormValidator;
 import fr.diginamic.utils.LocalDateUtils;
 
-public class DisplayVehiclesService extends MenuService {
+public class DisplayVehicle extends MenuService {
 
 	ModelDao modelDao = new ModelDao();
 	VehicleDao vehicleDao = new VehicleDao();
@@ -26,51 +29,61 @@ public class DisplayVehiclesService extends MenuService {
 
 	@Override
 	public void traitement() {
-
 		List<Vehicle> vehicles = vehicleDao.findAll();
-
 		console.clear();
 		console.print("<h1 class='bg-green'><center>Liste des véhicules</center></h1>");
-
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td><td>Plaque d'immatriculation</td><td>kilométrage</td><td>statut</td></tr>";
+				+ "<tr class='bg-green'><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td><td>Plaque d'immatriculation</td><td>kilométrage</td><td>statut</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 		for (Vehicle vehicle : vehicles) {
 			html += "<tr>" 
+					+ "  <td width='100px'>" + vehicle.getModel().getCategory() + "</td>" 
+					+ "  <td width='100px'>" + vehicle.getModel().getTypeVehicle().getName() + "</td>" 
+					+ "  <td width='100px'>" + vehicle.getModel().getMake().getName() + "</td>"
+					+ "  <td width='150px'>" + vehicle.getModel().getName() + "</td>" 
+					+ "  <td width='100px'>" + vehicle.getNumberPlate() + "</td>" 
+					+ "  <td width='100px'>" + vehicle.getMileage() + "</td>" 
+					+ "  <td width='100px'>" + vehicle.getStatusVehicle() + "</td>"
+					+ "  <td><a class='btn-red' href='maintenanceManagementVehicle(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></td>"
 					+ "  <td><a class='btn-blue' href='updateVehicle(" + vehicle.getId() + ")'><img width=25 src='images/pencil-blue-xs.png'></a></td>"
 					+ "  <td><a class='btn-red' href='deleteVehicle(" + vehicle.getId() + ")'><img width=25 src='images/trash-red-xs.png'></a></td>"
-					+ "  <td><a class='btn-red' href='putVehicleInMaintenance(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></td>"
-					+ "  <td width='150px'>" + vehicle.getModel().getCategory() + "</td>" 
-					+ "  <td width='150px'>" + vehicle.getModel().getTypeVehicle().getName() + "</td>" 
-					+ "  <td width='150px'>" + vehicle.getModel().getMake().getName() + "</td>"
-					+ "  <td width='150px'>" + vehicle.getModel().getName() + "</td>" 
-					+ "  <td width='150px'>" + vehicle.getNumberPlate() + "</td>" 
-					+ "  <td width='150px'>" + vehicle.getMileage() + "</td>" 
-					+ "  <td width='150px'>" + vehicle.getStatusVehicle() + "</td>" + "</tr>";
+				+ "</tr>";
 		}
 		html += "</table>";
-
 		console.print(html);
 	}
 
-	protected void putVehicleInMaintenance(Long id) {
+	protected void maintenanceManagementVehicle(Long id) {
 		Vehicle vehicle = vehicleDao.findById(id);
-		
-		Form form = new Form();
 		if (vehicle.getStatusVehicle().equals(StatusVehicle.AVAILABLE.getWording())) {
-			form.addInput(new DateField("Date de début de maintenance:", "startDate"));
-			FormMaintenanceValidator validator = new FormMaintenanceValidator();
-			boolean valide = console.input("Mettre en maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
-			if (valide) {
-				Maintenance maintenance = new Maintenance(LocalDateUtils.getDate(form.getValue("startDate")), vehicle);
-				maintenance.setVehicle(vehicle);
-				maintenanceDao.insert(maintenance);
-				traitement();
-			}
+			putVehicleInMaintenance(vehicle);
 		} else if (vehicle.getStatusVehicle().equals(StatusVehicle.MAINTENANCE.getWording())) {
-			
-		}
-		else {
+			removeVehicleFromMaintenance(vehicle);
+		} else {
 			console.alert("Le véhicule doit être disponible pour pouvoir être mis en maintenance");
+		}
+	}
+
+	private void removeVehicleFromMaintenance(Vehicle vehicle) {
+		Form form = new Form();
+		form.addInput(new DateField("Date de fin de maintenance:", "finalDate"));
+		form.addInput(new TextField("Coût des réparations:", "reparationCost", "0"));
+		RemoveVehicleFromMaintenanceFormValidator validator = new RemoveVehicleFromMaintenanceFormValidator();
+		boolean valide = console.input("Sortir de maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
+		if (valide) {
+			traitement();
+		}
+	}
+
+	private void putVehicleInMaintenance(Vehicle vehicle) {
+		Form form = new Form();
+		form.addInput(new DateField("Date de début de maintenance:", "startDate"));
+		PutVehicleInMaintenanceFormValidator validator = new PutVehicleInMaintenanceFormValidator();
+		boolean valide = console.input("Mettre en maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
+		if (valide) {
+			Maintenance maintenance = new Maintenance(LocalDateUtils.getDate(form.getValue("startDate")), vehicle);
+			maintenance.setVehicle(vehicle);
+			maintenanceDao.insert(maintenance);
+			traitement();
 		}
 	}
 	
@@ -79,7 +92,6 @@ public class DisplayVehiclesService extends MenuService {
 		List<Model> models = modelDao.findAll();
 		List<Selectable> modelsSelectable = new ArrayList<>();
 		modelsSelectable.addAll(models);
-
 		Form form = new Form();
 		if (vehicle.getBookings().isEmpty()) {
 			form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate", vehicle.getNumberPlate()));
@@ -88,10 +100,9 @@ public class DisplayVehiclesService extends MenuService {
 				modelsSelectable.get((vehicle.getModel().getId()).intValue() - 1)));
 		form.addInput(new TextField("Kilométrage:", "mileage", Float.toString(vehicle.getMileage())));
 		form.addInput(new TextField("Commentaire:", "comment", vehicle.getComment()));
-		FormVehicleValidator validator = new FormVehicleValidator();
+		VehicleFormValidator validator = new VehicleFormValidator();
 		validator.setNumberPlate(vehicle.getNumberPlate());
 		boolean valide = console.input("Saisissez les informations du véhicules", form, validator);
-
 		if (valide) {
 			if (vehicle.getBookings().isEmpty()) {
 				vehicle.setNumberPlate(form.getValue("numberPlate").toUpperCase());
@@ -110,7 +121,7 @@ public class DisplayVehiclesService extends MenuService {
 		if (vehicle.getBookings().isEmpty()) {
 			vehicleDao.delete(vehicle);
 		} else {
-			System.out.println("cette donnée ne peut être supprimée");
+			console.alert("ce véhicule ne peut être supprimé car il a déjà été réservé");
 		}
 		traitement();
 	}

@@ -13,8 +13,6 @@ public class VehicleDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
 	
-	MaintenanceDao maintenanceDao = new MaintenanceDao(em);
-
 	public VehicleDao() {
 	}
 
@@ -67,6 +65,7 @@ public class VehicleDao extends AbstractDao {
 	}
 
 	public void delete(Vehicle vehicle) {
+		MaintenanceDao maintenanceDao = new MaintenanceDao(em);
 		EntityTransaction transaction = em.getTransaction();
 		transaction.begin();
 		maintenanceDao.deleteFromVehicle(vehicle);

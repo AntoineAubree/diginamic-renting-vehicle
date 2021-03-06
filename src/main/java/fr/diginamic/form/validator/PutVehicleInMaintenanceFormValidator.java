@@ -1,4 +1,4 @@
-package fr.diginamic.services;
+package fr.diginamic.form.validator;
 
 import fr.diginamic.composants.ui.Form;
 import fr.diginamic.composants.validator.FormValidator;
@@ -9,7 +9,7 @@ import fr.diginamic.composants.validator.FormValidator;
  * @author rbonn
  *
  */
-public class FormMaintenanceValidator extends FormValidator {
+public class PutVehicleInMaintenanceFormValidator extends FormValidator {
 
 	@Override
 	public boolean validate(Form form) {

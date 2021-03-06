@@ -1,4 +1,4 @@
-package fr.diginamic.services;
+package fr.diginamic.form.validator;
 
 import java.util.regex.Pattern;
 
@@ -12,7 +12,7 @@ import fr.diginamic.dao.VehicleDao;
  * @author rbonn
  *
  */
-public class FormVehicleValidator extends FormValidator {
+public class VehicleFormValidator extends FormValidator {
 
 	VehicleDao vehicleDao = new VehicleDao();
 	private String numberPlate;
@@ -20,6 +20,7 @@ public class FormVehicleValidator extends FormValidator {
 	@Override
 	public boolean validate(Form form) {
 		String numberPLate = form.getValue("numberPlate").toUpperCase();
+		String mileage = form.getValue("mileage");
 		String[] numberPlatePieces = numberPLate.split("-");
 		if (numberPlatePieces.length != 3) {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
@@ -39,6 +40,14 @@ public class FormVehicleValidator extends FormValidator {
 		boolean numberPlateAvailable = vehicleDao.checkNumberPlate(numberPLate);
 		if (!numberPlateAvailable && !numberPLate.equals(this.numberPlate)) {
 			console.alert("Cette plaque d'immatriculation est déjà renseignée");
+			return false;
+		}
+		if (mileage.isEmpty()) {
+			console.alert("Le kilométragde doit être renseigné");
+			return false;
+		}
+		if (!Pattern.matches("^([+]?\\d*\\.?\\d*)$", mileage)) {
+			console.alert("Le kilométragde doit être positif");
 			return false;
 		}
 		return true;

@@ -1,4 +1,4 @@
-package fr.diginamic.services;
+package fr.diginamic.ihm;
 
 import java.util.List;
 
@@ -9,8 +9,9 @@ import fr.diginamic.composants.ui.Form;
 import fr.diginamic.composants.ui.TextField;
 import fr.diginamic.dao.ModelDao;
 import fr.diginamic.dao.VehicleDao;
+import fr.diginamic.form.validator.VehicleFormValidator;
 
-public class AddVehicleService extends MenuService {
+public class AddVehicle extends MenuService {
 
 	ModelDao modelDao = new ModelDao();
 	VehicleDao vehicleDao = new VehicleDao();
@@ -30,7 +31,7 @@ public class AddVehicleService extends MenuService {
 				+ "<tr class='bg-green'><td>&nbsp;</td><td>Catégorie</td><td>Marque</td><td>Modèle</td><td>Type</td></tr>";
 		for (Model model : models) {
 			html += "<tr>" 
-					+ "  <td><a class='btn-blue' href='setVehicleData(" + model.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
+					+ "  <td><a class='btn-blue' href='addVehicle(" + model.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
 					+ "  <td width='150px'>" + model.getCategory() + "</td>" 
 					+ "  <td width='150px'>" + model.getMake().getName() + "</td>"
 					+ "  <td width='150px'>" + model.getName() + "</td>" 
@@ -41,11 +42,11 @@ public class AddVehicleService extends MenuService {
 
 	}
 
-	protected void setVehicleData(Long id) {
+	protected void addVehicle(Long id) {
 		Form form = new Form();
 		form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate"));
 		form.addInput(new TextField("Kilométrage:", "mileage", "0"));
-		FormVehicleValidator validator = new FormVehicleValidator();
+		VehicleFormValidator validator = new VehicleFormValidator();
 		boolean valide = console.input("Saisissez les informations du véhicules", form, validator);
 		if (valide) {
 			Model model = modelDao.findById(id);

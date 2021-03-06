@@ -9,8 +9,6 @@ import fr.diginamic.beans.Vehicle;
 public class MaintenanceDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
-	
-	VehicleDao vehicleDao = new VehicleDao(em);
 
 	public MaintenanceDao() {
 	}
@@ -20,6 +18,7 @@ public class MaintenanceDao extends AbstractDao {
 	}
 
 	public void insert(Maintenance maintenance) {
+		VehicleDao vehicleDao = new VehicleDao(em);
 		EntityTransaction transaction = em.getTransaction();
 		transaction.begin();
 		em.persist(maintenance);
