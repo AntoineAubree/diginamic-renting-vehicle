@@ -3,6 +3,7 @@ package fr.diginamic;
 import fr.diginamic.composants.AbstractApplication;
 import fr.diginamic.ihm.AddVehicle;
 import fr.diginamic.ihm.DisplayVehicle;
+import fr.diginamic.ihm.DisplayClient;
 
 /**
  * Fenêtre principale qui porte les principaux composants graphiques de
@@ -33,8 +34,10 @@ public class Application extends AbstractApplication {
 	public void main() {
 
 		addMenu(1, "Véhicule");
+		addMenu(2, "Client");
 
 		addMenuOption(1, "Afficher les véhicules", new DisplayVehicle());
 		addMenuOption(1, "Ajouter un véhicule", new AddVehicle());
+		addMenuOption(2, "Afficher les clients", new DisplayClient());
 	}
 }

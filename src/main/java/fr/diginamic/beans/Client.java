@@ -27,8 +27,8 @@ public class Client {
 	private Long id;
 	@Column(name = "firstname", length = 50, nullable = false)
 	private String firstname;
-	@Column(name = "lastename", length = 50, nullable = false)
-	private String lastename;
+	@Column(name = "lastname", length = 50, nullable = false)
+	private String lastname;
 	@Column(name = "phone_number", length = 10, nullable = false, unique = true)
 	private String phoneNumber;
 	@Column(name = "email", length = 80, nullable = false, unique = true)
@@ -43,9 +43,9 @@ public class Client {
 	public Client() {
 	}
 
-	public Client(String firstname, String lastename) {
+	public Client(String firstname, String lastname) {
 		this.firstname = firstname;
-		this.lastename = lastename;
+		this.lastname = lastname;
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class Client {
 		builder.append(", firstname=");
 		builder.append(firstname);
 		builder.append(", lastename=");
-		builder.append(lastename);
+		builder.append(lastname);
 		builder.append(", phoneNumber=");
 		builder.append(phoneNumber);
 		builder.append(", email=");
@@ -83,12 +83,12 @@ public class Client {
 		this.firstname = firstname;
 	}
 
-	public String getLastename() {
-		return lastename;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setLastename(String lastename) {
-		this.lastename = lastename;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public String getPhoneNumber() {
