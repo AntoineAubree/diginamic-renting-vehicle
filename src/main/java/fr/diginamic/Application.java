@@ -1,6 +1,7 @@
 package fr.diginamic;
 
 import fr.diginamic.composants.AbstractApplication;
+import fr.diginamic.ihm.AddClient;
 import fr.diginamic.ihm.AddVehicle;
 import fr.diginamic.ihm.DisplayVehicle;
 import fr.diginamic.ihm.DisplayClient;
@@ -39,5 +40,6 @@ public class Application extends AbstractApplication {
 		addMenuOption(1, "Afficher les véhicules", new DisplayVehicle());
 		addMenuOption(1, "Ajouter un véhicule", new AddVehicle());
 		addMenuOption(2, "Afficher les clients", new DisplayClient());
+		addMenuOption(2, "Ajouter un client", new AddClient());
 	}
 }

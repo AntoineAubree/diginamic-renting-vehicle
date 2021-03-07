@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,8 +34,9 @@ public class Vehicle {
 	private String comment;
 	@Column(name = "mileage")
 	private float mileage;
+	@Enumerated(EnumType.STRING)
 	@Column(name = "status_vehicle", length = 15, nullable = false)
-	private String statusVehicle;
+	private StatusVehicle statusVehicle;
 	@ManyToOne
 	@JoinColumn(name = "id_model", nullable = false)
 	private Model model;
@@ -43,13 +46,13 @@ public class Vehicle {
 	private List<Booking> bookings = new ArrayList<>();
 
 	public Vehicle() {
-		this.statusVehicle = StatusVehicle.AVAILABLE.getWording();
+		this.statusVehicle = StatusVehicle.AVAILABLE;
 	}
 
 	public Vehicle(String numberPlate, float mileage) {
 		this.numberPlate = numberPlate;
 		this.mileage = mileage;
-		this.statusVehicle = StatusVehicle.AVAILABLE.getWording();
+		this.statusVehicle = StatusVehicle.AVAILABLE;
 	}
 
 	@Override
@@ -93,12 +96,12 @@ public class Vehicle {
 		this.mileage = mileage;
 	}
 
-	public String getStatusVehicle() {
+	public StatusVehicle getStatusVehicle() {
 		return statusVehicle;
 	}
 
 	public void setStatusVehicle(StatusVehicle statusVehicle) {
-		this.statusVehicle = statusVehicle.getWording();
+		this.statusVehicle = statusVehicle;
 	}
 
 	public Model getModel() {

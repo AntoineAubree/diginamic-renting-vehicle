@@ -42,7 +42,7 @@ public class DisplayVehicle extends MenuService {
 					+ "  <td width='150px'>" + vehicle.getModel().getName() + "</td>" 
 					+ "  <td width='100px'>" + vehicle.getNumberPlate() + "</td>" 
 					+ "  <td width='100px'>" + vehicle.getMileage() + "</td>" 
-					+ "  <td width='100px'>" + vehicle.getStatusVehicle() + "</td>"
+					+ "  <td width='100px'>" + vehicle.getStatusVehicle().getWording() + "</td>"
 					+ "  <td><a class='btn-red' href='maintenanceManagementVehicle(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></td>"
 					+ "  <td><a class='btn-blue' href='updateVehicle(" + vehicle.getId() + ")'><img width=25 src='images/pencil-blue-xs.png'></a></td>"
 					+ "  <td><a class='btn-red' href='deleteVehicle(" + vehicle.getId() + ")'><img width=25 src='images/trash-red-xs.png'></a></td>"
@@ -54,9 +54,9 @@ public class DisplayVehicle extends MenuService {
 
 	protected void maintenanceManagementVehicle(Long id) {
 		Vehicle vehicle = vehicleDao.findById(id);
-		if (vehicle.getStatusVehicle().equals(StatusVehicle.AVAILABLE.getWording())) {
+		if (vehicle.getStatusVehicle().equals(StatusVehicle.AVAILABLE)) {
 			putVehicleInMaintenance(vehicle);
-		} else if (vehicle.getStatusVehicle().equals(StatusVehicle.MAINTENANCE.getWording())) {
+		} else if (vehicle.getStatusVehicle().equals(StatusVehicle.MAINTENANCE)) {
 			removeVehicleFromMaintenance(vehicle);
 		} else {
 			console.alert("Le véhicule doit être disponible pour pouvoir être mis en maintenance");
@@ -72,7 +72,7 @@ public class DisplayVehicle extends MenuService {
 		validator.setMaintenance(maintenance);
 		boolean valide = console.input("Sortir de maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
 		if (valide) {
-			maintenance.setReparationCost(Float.parseFloat(form.getValue("reparationCost")));
+			maintenance.setReparationCost(Float.parseFloat(form.getValue("reparationCost").trim()));
 			maintenance.setFinalDate(LocalDateUtils.getDate(form.getValue("finalDate")));
 			maintenanceDao.finishMaintenance(maintenance);
 			traitement();
@@ -115,7 +115,7 @@ public class DisplayVehicle extends MenuService {
 			}
 			Model model = modelDao.findById(Long.parseLong(form.getValue("model")));
 			vehicle.setModel(model);
-			vehicle.setMileage(Float.parseFloat(form.getValue("mileage")));
+			vehicle.setMileage(Float.parseFloat(form.getValue("mileage").trim()));
 			vehicle.setComment(form.getValue("comment"));
 			vehicleDao.update(vehicle);
 			traitement();

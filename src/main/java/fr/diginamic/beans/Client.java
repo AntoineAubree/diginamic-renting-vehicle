@@ -35,6 +35,8 @@ public class Client {
 	private String email;
 	@Embedded
 	private Address address;
+	@Embedded
+	private DrivingLicence drivingLicence;
 	@OneToMany(mappedBy = "client")
 	private List<Receipt> receipts = new ArrayList<>();
 	@OneToMany(mappedBy = "client")
@@ -129,6 +131,14 @@ public class Client {
 
 	public void setBooginks(List<Booking> booginks) {
 		this.booginks = booginks;
+	}
+
+	public DrivingLicence getDrivingLicence() {
+		return drivingLicence;
+	}
+
+	public void setDrivingLicence(DrivingLicence drivingLicence) {
+		this.drivingLicence = drivingLicence;
 	}
 
 }

@@ -28,4 +28,12 @@ public class RegexUtils {
 		return Pattern.matches("^[A-Z0-9]*$", string);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public static boolean containsOnlyLetterOrMinusCharactereOrSpace(String string) {
+		return Pattern.matches("^[A-Za-z\s-]*$", string);
+	}
+
 }

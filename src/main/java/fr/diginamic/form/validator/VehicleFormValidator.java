@@ -19,7 +19,7 @@ public class VehicleFormValidator extends FormValidator {
 	@Override
 	public boolean validate(Form form) {
 		String numberPLate = form.getValue("numberPlate").toUpperCase();
-		String mileage = form.getValue("mileage");
+		String mileage = form.getValue("mileage").trim();
 		String[] numberPlatePieces = numberPLate.split("-");
 		if (numberPlatePieces.length != 3) {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");

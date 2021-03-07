@@ -17,7 +17,7 @@ public class ModelDao extends AbstractDao {
 	}
 	
 	public List<Model> findAll() {
-		TypedQuery<Model> query = em.createQuery("SELECT m FROM Model m", Model.class);
+		TypedQuery<Model> query = em.createQuery("SELECT mo FROM Model mo JOIN mo.typeVehicle t JOIN mo.make ma ORDER BY t.categoryVehicle, t.name, ma.name, mo.name", Model.class);
 		List<Model> models = query.getResultList();
 		return models;
 	}

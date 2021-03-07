@@ -17,8 +17,8 @@ import javax.persistence.Enumerated;
 @Embeddable
 public class DrivingLicence {
 
-	@Column(name = "number")
-	private int number;
+	@Column(name = "driving_licence_number")
+	private int drivingLicenceNumber;
 	@Column(name = "obtening_date", nullable = false)
 	private LocalDate obteningDate;
 	@Enumerated(EnumType.STRING)
@@ -31,8 +31,8 @@ public class DrivingLicence {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("DrivingLicence [number=");
-		builder.append(number);
+		builder.append("DrivingLicence [drivingLicenceNumber=");
+		builder.append(drivingLicenceNumber);
 		builder.append(", obteningDate=");
 		builder.append(obteningDate);
 		builder.append(", categoryDrivingLicence=");
@@ -41,12 +41,12 @@ public class DrivingLicence {
 		return builder.toString();
 	}
 
-	public int getNumber() {
-		return number;
+	public int getDrivingLicenceNumber() {
+		return drivingLicenceNumber;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setDrivingLicenceNumber(int drivingLicenceNumber) {
+		this.drivingLicenceNumber = drivingLicenceNumber;
 	}
 
 	public LocalDate getObteningDate() {

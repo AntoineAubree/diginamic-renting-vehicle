@@ -13,8 +13,8 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 
-	@Column(name = "number")
-	private int number;
+	@Column(name = "street_number")
+	private int streetNumber;
 	@Column(name = "street_wording", length = 50, nullable = false)
 	private String streetWording;
 	@Column(name = "postcode", length = 5, nullable = false)
@@ -25,8 +25,8 @@ public class Address {
 	public Address() {
 	}
 
-	public Address(int number, String streetWording, String postcode, String city) {
-		this.number = number;
+	public Address(int streetNumber, String streetWording, String postcode, String city) {
+		this.streetNumber = streetNumber;
 		this.streetWording = streetWording;
 		this.postcode = postcode;
 		this.city = city;
@@ -35,8 +35,8 @@ public class Address {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Address [number=");
-		builder.append(number);
+		builder.append("Address [streetNumber=");
+		builder.append(streetNumber);
 		builder.append(", streetWording=");
 		builder.append(streetWording);
 		builder.append(", postcode=");
@@ -47,12 +47,12 @@ public class Address {
 		return builder.toString();
 	}
 
-	public int getNumber() {
-		return number;
+	public int getStreetNumber() {
+		return streetNumber;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setStreetNumber(int streetNumber) {
+		this.streetNumber = streetNumber;
 	}
 
 	public String getStreetWording() {

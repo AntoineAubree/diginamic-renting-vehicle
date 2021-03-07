@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,8 +34,9 @@ public class TypeVehicle {
 	private float dailyPrince;
 	@Column(name = "guarantee")
 	private float guarantee;
+	@Enumerated(EnumType.STRING)
 	@Column(name = "category_vehicle", length = 7, nullable = false)
-	private String categoryVehicle;
+	private CategoryVehicle categoryVehicle;
 	@OneToMany(mappedBy = "typeVehicle")
 	private List<Model> models = new ArrayList<>();
 
@@ -44,7 +47,7 @@ public class TypeVehicle {
 		this.name = name;
 		this.dailyPrince = dailyPrince;
 		this.guarantee = guarantee;
-		this.categoryVehicle = categoryVehicle.getWording();
+		this.categoryVehicle = categoryVehicle;
 	}
 
 	@Override
@@ -96,12 +99,12 @@ public class TypeVehicle {
 		this.guarantee = guarantee;
 	}
 
-	public String getCategoryVehicle() {
+	public CategoryVehicle getCategoryVehicle() {
 		return categoryVehicle;
 	}
 
 	public void setCategoryVehicle(CategoryVehicle categoryVehicle) {
-		this.categoryVehicle = categoryVehicle.getWording();
+		this.categoryVehicle = categoryVehicle;
 	}
 
 	public List<Model> getModels() {

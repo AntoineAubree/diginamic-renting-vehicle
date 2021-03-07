@@ -28,14 +28,15 @@ public class AddVehicle extends MenuService {
 		console.print("<br>");
 
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>&nbsp;</td><td>Catégorie</td><td>Marque</td><td>Modèle</td><td>Type</td></tr>";
+				+ "<tr class='bg-green'><td>&nbsp;</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td></tr>";
 		for (Model model : models) {
 			html += "<tr>" 
 					+ "  <td><a class='btn-green' href='addVehicle(" + model.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
 					+ "  <td width='150px'>" + model.getCategory() + "</td>" 
+					+ "  <td width='150px'>" + model.getTypeVehicle().getName() + "</td>" 
 					+ "  <td width='150px'>" + model.getMake().getName() + "</td>"
 					+ "  <td width='150px'>" + model.getName() + "</td>" 
-					+ "  <td width='150px'>" + model.getTypeVehicle().getName() + "</td>" + "</tr>";
+				+ "</tr>";
 		}
 		html += "</table>";
 		console.print(html);
@@ -47,10 +48,10 @@ public class AddVehicle extends MenuService {
 		form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate"));
 		form.addInput(new TextField("Kilométrage:", "mileage", "0"));
 		VehicleFormValidator validator = new VehicleFormValidator();
-		boolean valide = console.input("Saisissez les informations du véhicules", form, validator);
+		boolean valide = console.input("Saisissez les informations du véhicule", form, validator);
 		if (valide) {
 			Model model = modelDao.findById(id);
-			Vehicle vehicle = new Vehicle(form.getValue("numberPlate").toUpperCase(), Float.parseFloat(form.getValue("mileage")));
+			Vehicle vehicle = new Vehicle(form.getValue("numberPlate").toUpperCase(), Float.parseFloat(form.getValue("mileage").trim()));
 			vehicle.setModel(model);
 			vehicleDao.insert(vehicle);
 			traitement();
