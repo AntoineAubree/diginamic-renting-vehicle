@@ -19,7 +19,7 @@ import javax.persistence.OneToOne;
  *
  */
 @Entity
-public abstract class Booking {
+public class Booking {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +32,9 @@ public abstract class Booking {
 	@Column(name = "final_date")
 	private LocalDate finalDate;
 	@Column(name = "start_mileage")
-	private int startMileage;
+	private float startMileage;
 	@Column(name = "final_mileage")
-	private int finalMileage;
+	private float finalMileage;
 	@Column(name = "comment", length = 400)
 	private String comment;
 	@ManyToOne
@@ -48,6 +48,86 @@ public abstract class Booking {
 	private Receipt receipt;
 
 	public Booking() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEstimatedFinalDate() {
+		return estimatedFinalDate;
+	}
+
+	public void setEstimatedFinalDate(LocalDate estimatedFinalDate) {
+		this.estimatedFinalDate = estimatedFinalDate;
+	}
+
+	public LocalDate getFinalDate() {
+		return finalDate;
+	}
+
+	public void setFinalDate(LocalDate finalDate) {
+		this.finalDate = finalDate;
+	}
+
+	public float getStartMileage() {
+		return startMileage;
+	}
+
+	public void setStartMileage(float startMileage) {
+		this.startMileage = startMileage;
+	}
+
+	public float getFinalMileage() {
+		return finalMileage;
+	}
+
+	public void setFinalMileage(float finalMileage) {
+		this.finalMileage = finalMileage;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
+	}
+
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
+
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public Receipt getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
 	}
 
 }

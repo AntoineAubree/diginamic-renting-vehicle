@@ -24,7 +24,7 @@ public class AddVehicle extends MenuService {
 		console.clear();
 		console.print("<h1 class='bg-green'><center>Ajouter un véhicule</center></h1>");
 		console.print("<h2 class='bg-green'><center>Sélectionnez le modèle</center></h2>");
-		console.print("<p>Si le modèle n'est pas dans la liste, <a href='#'>cliquer ici</a></p>");
+		console.print("<p>Ajouter un modèle qui n'est pas dans la liste <a class='btn-green' href='#'><img width=25 src='images/plus-green.png'></a></p>");
 		console.print("<br>");
 
 		String html = "<table cellspacing=0>"
