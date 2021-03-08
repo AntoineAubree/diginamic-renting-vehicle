@@ -116,7 +116,7 @@ public class DisplayVehicle extends MenuService {
 			Model model = modelDao.findById(Long.parseLong(form.getValue("model")));
 			vehicle.setModel(model);
 			vehicle.setMileage(Float.parseFloat(form.getValue("mileage").trim()));
-			vehicle.setComment(form.getValue("comment"));
+			vehicle.setComment(form.getValue("comment").trim());
 			vehicleDao.update(vehicle);
 			traitement();
 		}

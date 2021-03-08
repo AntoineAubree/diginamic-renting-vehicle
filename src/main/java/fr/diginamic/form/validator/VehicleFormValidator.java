@@ -19,7 +19,6 @@ public class VehicleFormValidator extends FormValidator {
 	@Override
 	public boolean validate(Form form) {
 		String numberPLate = form.getValue("numberPlate").toUpperCase();
-		String mileage = form.getValue("mileage").trim();
 		String[] numberPlatePieces = numberPLate.split("-");
 		if (numberPlatePieces.length != 3) {
 			console.alert("La plaque d'immatriculation doit être au format XX-XXX-XX");
@@ -39,11 +38,14 @@ public class VehicleFormValidator extends FormValidator {
 		if (!numberPlateAvailable && !numberPLate.equals(this.numberPlate)) {
 			console.alert("Cette plaque d'immatriculation est déjà renseignée");
 			return false;
-		} else if (mileage.isEmpty()) {
+		} 
+		
+		String mileage = form.getValue("mileage").trim();
+		if (mileage.isEmpty()) {
 			console.alert("Le kilométragde doit être renseigné");
 			return false;
 		} else if (!RegexUtils.isPositiveFloat(mileage)) {
-			console.alert("Le kilométragde doit être positif");
+			console.alert("Le kilométragde doit être un nombre positif");
 			return false;
 		}
 		return true;

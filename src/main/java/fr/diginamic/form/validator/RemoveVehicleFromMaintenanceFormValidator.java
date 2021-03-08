@@ -21,7 +21,6 @@ public class RemoveVehicleFromMaintenanceFormValidator extends FormValidator {
 	@Override
 	public boolean validate(Form form) {
 		String finalDate = form.getValue("finalDate");
-		String reparationCost = form.getValue("reparationCost").trim();
 		if (finalDate == null || finalDate.trim().isEmpty()) {
 			console.alert("La date de sortie de maintenance est obligatoire");
 			return false;
@@ -31,7 +30,10 @@ public class RemoveVehicleFromMaintenanceFormValidator extends FormValidator {
 		} else if (LocalDateUtils.getDate(finalDate).isBefore(maintenance.getStartDate())) {
 			console.alert("La date de fin de maintenance ne peut pas être inférieure à la date de début");
 			return false;
-		} else if (reparationCost.isEmpty()) {
+		} 
+		
+		String reparationCost = form.getValue("reparationCost").trim();
+		if (reparationCost.isEmpty()) {
 			console.alert("Le montant des réparations doit être renseigné");
 			return false;
 		} else if (!RegexUtils.isPositiveFloat(reparationCost)) {

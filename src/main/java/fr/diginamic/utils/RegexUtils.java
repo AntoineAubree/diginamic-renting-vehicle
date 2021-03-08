@@ -22,7 +22,7 @@ public class RegexUtils {
 
 	/**
 	 * 
-	 * @return 
+	 * @return
 	 */
 	public static boolean containsOnlyIntegerOrUppercaseLetter(String string) {
 		return Pattern.matches("^[A-Z0-9]*$", string);
@@ -34,6 +34,30 @@ public class RegexUtils {
 	 */
 	public static boolean containsOnlyLetterOrMinusCharactereOrSpace(String string) {
 		return Pattern.matches("^[A-Za-z\s-]*$", string);
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static boolean isIntegerBetwenOneAndNine(char c) {
+		return Pattern.matches("^[1-9]*$", Character.toString(c));
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static boolean isInteger(char c) {
+		return Pattern.matches("^[0-9]*$", Character.toString(c));
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public static boolean isInteger(String string) {
+		return Pattern.matches("^[0-9]*$", string);
 	}
 
 }

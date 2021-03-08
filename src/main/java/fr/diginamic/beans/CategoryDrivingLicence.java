@@ -23,5 +23,14 @@ public enum CategoryDrivingLicence implements Selectable {
 	public Long getId() {
 		return id;
 	}
+	
+	public static CategoryDrivingLicence getById(Long id) {
+		for (CategoryDrivingLicence categoryDrivingLicence : CategoryDrivingLicence.values()) {
+			if (categoryDrivingLicence.getId() == id) {
+				return categoryDrivingLicence;
+			}
+		}
+		return null;
+	}
 
 }
