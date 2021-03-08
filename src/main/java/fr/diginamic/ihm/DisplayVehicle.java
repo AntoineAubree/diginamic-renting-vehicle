@@ -16,8 +16,8 @@ import fr.diginamic.composants.ui.TextField;
 import fr.diginamic.dao.MaintenanceDao;
 import fr.diginamic.dao.ModelDao;
 import fr.diginamic.dao.VehicleDao;
-import fr.diginamic.form.validator.RemoveVehicleFromMaintenanceFormValidator;
 import fr.diginamic.form.validator.PutVehicleInMaintenanceFormValidator;
+import fr.diginamic.form.validator.RemoveVehicleFromMaintenanceFormValidator;
 import fr.diginamic.form.validator.VehicleFormValidator;
 import fr.diginamic.utils.LocalDateUtils;
 
@@ -96,6 +96,13 @@ public class DisplayVehicle extends MenuService {
 	protected void updateVehicle(Long id) {
 		Vehicle vehicle = vehicleDao.findById(id);
 		List<Model> models = modelDao.findAll();
+		int idModel = 0;
+		for (Model model : models) {
+			if (model.getId() == vehicle.getModel().getId()) {
+				break;
+			}
+			idModel++;
+		}
 		List<Selectable> modelsSelectable = new ArrayList<>();
 		modelsSelectable.addAll(models);
 		Form form = new Form();
@@ -103,7 +110,7 @@ public class DisplayVehicle extends MenuService {
 			form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate", vehicle.getNumberPlate()));
 		}
 		form.addInput(new ComboBox("Véhicule:", "model", modelsSelectable,
-				modelsSelectable.get((vehicle.getModel().getId()).intValue() - 1)));
+				modelsSelectable.get(idModel)));
 		form.addInput(new TextField("Kilométrage:", "mileage", Float.toString(vehicle.getMileage())));
 		form.addInput(new TextField("Commentaire:", "comment", vehicle.getComment()));
 		VehicleFormValidator validator = new VehicleFormValidator();

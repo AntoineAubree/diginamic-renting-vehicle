@@ -1,6 +1,5 @@
 package fr.diginamic.dao;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -37,9 +36,16 @@ public class BookingDao extends AbstractDao {
 		EntityTransaction transaction = em.getTransaction();
 		transaction.begin();
 		em.persist(booking);
-		if (booking.getStartDate().isEqual(LocalDate.now())) {
-			vehicleDao.putInBooking(booking.getVehicle());
-		}
+		vehicleDao.putInBooking(booking.getVehicle());
+		transaction.commit();
+	}
+
+	public void closeBooking(Booking booking) {
+		VehicleDao vehicleDao = new VehicleDao(em);
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.merge(booking);
+		vehicleDao.removeFromBooking(booking.getVehicle());
 		transaction.commit();
 	}
 

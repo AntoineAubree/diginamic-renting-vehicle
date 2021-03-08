@@ -103,6 +103,11 @@ public class VehicleDao extends AbstractDao {
 		em.merge(vehicle);
 	}
 
+	public void removeFromBooking(Vehicle vehicle) {
+		vehicle.setStatusVehicle(StatusVehicle.AVAILABLE);;
+		em.merge(vehicle);
+	}
+
 
 
 }

@@ -117,7 +117,7 @@ public class ClientFormValidator extends FormValidator {
 			console.alert("La date d'obtention du permis est obligatoire");
 			return false;
 		} else if (LocalDateUtils.getDate(obteningDate).isAfter(LocalDate.now())) {
-			console.alert("La date d'obtention du permis ne peut pas être suppérieure à la date du jour");
+			console.alert("La date d'obtention du permis ne peut pas être supérieure à la date du jour");
 			return false;
 		}
 
