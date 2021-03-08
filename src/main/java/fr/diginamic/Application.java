@@ -3,8 +3,9 @@ package fr.diginamic;
 import fr.diginamic.composants.AbstractApplication;
 import fr.diginamic.ihm.AddClient;
 import fr.diginamic.ihm.AddVehicle;
-import fr.diginamic.ihm.DisplayVehicle;
 import fr.diginamic.ihm.DisplayClient;
+import fr.diginamic.ihm.DisplayMake;
+import fr.diginamic.ihm.DisplayVehicle;
 
 /**
  * Fenêtre principale qui porte les principaux composants graphiques de
@@ -37,9 +38,13 @@ public class Application extends AbstractApplication {
 		addMenu(1, "Véhicule");
 		addMenu(2, "Client");
 
-		addMenuOption(1, "Afficher les véhicules", new DisplayVehicle());
+		addMenuOption(1, "Affichage/gestion les véhicules", new DisplayVehicle());
 		addMenuOption(1, "Ajouter un véhicule", new AddVehicle());
-		addMenuOption(2, "Afficher les clients", new DisplayClient());
+		addMenuOption(1, "Gestion des marques de véhicules", new DisplayMake());
+		addMenuOption(1, "Gestion des types de véhicules", new AddVehicle());
+		addMenuOption(1, "Gestion des modèles de véhicules", new AddVehicle());
+		
+		addMenuOption(2, "Affichage/gestion les clients", new DisplayClient());
 		addMenuOption(2, "Ajouter un client", new AddClient());
 	}
 }
