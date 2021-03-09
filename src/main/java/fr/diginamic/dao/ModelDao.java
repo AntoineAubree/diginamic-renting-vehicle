@@ -3,9 +3,12 @@ package fr.diginamic.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
+import fr.diginamic.beans.Car;
 import fr.diginamic.beans.Model;
+import fr.diginamic.beans.Truck;
 
 public class ModelDao extends AbstractDao {
 
@@ -22,6 +25,41 @@ public class ModelDao extends AbstractDao {
 				Model.class);
 		List<Model> models = query.getResultList();
 		return models;
+	}
+
+	public void delete(Model model) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.remove(model);
+		transaction.commit();
+	}
+
+	public void insertCar(Car model) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.persist(model);
+		transaction.commit();
+	}
+
+	public void insertTruck(Truck model) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.persist(model);
+		transaction.commit();
+	}
+
+	public void updateCar(Car car) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.merge(car);
+		transaction.commit();
+	}
+
+	public void updateTruck(Truck truck) {
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		em.merge(truck);
+		transaction.commit();
 	}
 
 }

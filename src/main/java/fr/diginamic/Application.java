@@ -7,6 +7,7 @@ import fr.diginamic.ihm.AddVehicle;
 import fr.diginamic.ihm.DisplayBooking;
 import fr.diginamic.ihm.DisplayClient;
 import fr.diginamic.ihm.DisplayMake;
+import fr.diginamic.ihm.DisplayModel;
 import fr.diginamic.ihm.DisplayNotPayedBooking;
 import fr.diginamic.ihm.DisplayPayedBooking;
 import fr.diginamic.ihm.DisplayTypeVehicle;
@@ -48,7 +49,7 @@ public class Application extends AbstractApplication {
 		addMenuOption(1, "Ajout d'un véhicule", new AddVehicle());
 		addMenuOption(1, "Gestion des marques de véhicules", new DisplayMake());
 		addMenuOption(1, "Gestion des types de véhicules", new DisplayTypeVehicle());
-//		addMenuOption(1, "Gestion des modèles de véhicules", new AddVehicle());
+		addMenuOption(1, "Gestion des modèles de véhicules", new DisplayModel());
 		
 		addMenuOption(2, "Gestion les clients", new DisplayClient());
 		addMenuOption(2, "Ajout d'un client", new AddClient());

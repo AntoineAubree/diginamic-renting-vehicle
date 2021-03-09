@@ -13,12 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import fr.diginamic.composants.ui.Selectable;
+
 /**
  * @author Antoine
  *
  */
 @Entity
-public class Make {
+public class Make implements Selectable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,15 +41,11 @@ public class Make {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Make [id=");
-		builder.append(id);
-		builder.append(", name=");
 		builder.append(name);
-		builder.append("]");
 		return builder.toString();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

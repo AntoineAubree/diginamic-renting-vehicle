@@ -14,7 +14,7 @@ import javax.persistence.Entity;
 public class Truck extends Model {
 
 	@Column(name = "volume")
-	private int volume;
+	private float volume;
 
 	public Truck() {
 	}
@@ -24,11 +24,11 @@ public class Truck extends Model {
 		this.volume = volume;
 	}
 
-	public int getVolume() {
+	public float getVolume() {
 		return volume;
 	}
 
-	public void setVolume(int volume) {
+	public void setVolume(float volume) {
 		this.volume = volume;
 	}
 	

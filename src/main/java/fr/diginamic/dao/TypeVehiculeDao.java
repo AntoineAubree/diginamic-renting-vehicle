@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
+import fr.diginamic.beans.CategoryVehicle;
 import fr.diginamic.beans.TypeVehicle;
 
 public class TypeVehiculeDao extends AbstractDao {
@@ -54,6 +55,22 @@ public class TypeVehiculeDao extends AbstractDao {
 		transaction.begin();
 		em.merge(typeVehicle);
 		transaction.commit();
+	}
+
+	public List<TypeVehicle> findAllCar() {
+		TypedQuery<TypeVehicle> query = em.createQuery("SELECT t FROM TypeVehicle t WHERE t.categoryVehicle = :categoryVehicle ORDER BY t.name", TypeVehicle.class);
+		query.setParameter("categoryVehicle", CategoryVehicle.CAR);
+		List<TypeVehicle> typesVehicleSelect = query.getResultList();
+		return typesVehicleSelect;
+	}
+
+	public List<TypeVehicle> findAllTruck() {
+		TypedQuery<TypeVehicle> query = em.createQuery(
+				"SELECT t FROM TypeVehicle t WHERE t.categoryVehicle = :categoryVehicle ORDER BY t.name",
+				TypeVehicle.class);
+		query.setParameter("categoryVehicle", CategoryVehicle.TRUCK);
+		List<TypeVehicle> typesVehicleSelect = query.getResultList();
+		return typesVehicleSelect;
 	}
 
 }

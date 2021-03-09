@@ -16,13 +16,15 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import fr.diginamic.composants.ui.Selectable;
+
 /**
  * @author Antoine
  *
  */
 @Entity
 @Table(name = "type_vehicle")
-public class TypeVehicle {
+public class TypeVehicle implements Selectable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,21 +55,11 @@ public class TypeVehicle {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("TypeVehicle [id=");
-		builder.append(id);
-		builder.append(", name=");
 		builder.append(name);
-		builder.append(", dailyPrince=");
-		builder.append(dailyPrince);
-		builder.append(", guarantee=");
-		builder.append(guarantee);
-		builder.append(", categoryVehicle=");
-		builder.append(categoryVehicle);
-		builder.append("]");
 		return builder.toString();
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
