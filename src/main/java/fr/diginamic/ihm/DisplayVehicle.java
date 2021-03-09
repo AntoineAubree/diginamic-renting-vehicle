@@ -31,6 +31,9 @@ public class DisplayVehicle extends MenuService {
 	public void traitement() {
 		List<Vehicle> vehicles = new ArrayList<>();
 		vehicles = vehicleDao.findAll();
+		for (Vehicle vehicle : vehicles) {
+			System.out.println(vehicle);
+		}
 		console.clear();
 		console.println("<h1 class='bg-green'><center>Gestion des véhicules</center></h1>");
 		String html = "<table cellspacing=0>"

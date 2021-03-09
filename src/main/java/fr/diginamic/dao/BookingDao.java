@@ -7,6 +7,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 import fr.diginamic.beans.Booking;
+import fr.diginamic.beans.StatusVehicle;
+import fr.diginamic.beans.Vehicle;
 
 public class BookingDao extends AbstractDao {
 
@@ -40,11 +42,13 @@ public class BookingDao extends AbstractDao {
 	}
 
 	public void insert(Booking booking) {
-		VehicleDao vehicleDao = new VehicleDao(em);
+//		VehicleDao vehicleDao = new VehicleDao(em);
 		EntityTransaction transaction = em.getTransaction();
 		transaction.begin();
 		em.persist(booking);
-		vehicleDao.putInBooking(booking.getVehicle());
+//		vehicleDao.putInBooking(booking.getVehicle());
+		Vehicle v = em.find(Vehicle.class, booking.getVehicle().getId());
+		v.setStatusVehicle(StatusVehicle.RENTED);
 		transaction.commit();
 	}
 
