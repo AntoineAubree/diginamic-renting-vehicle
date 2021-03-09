@@ -10,13 +10,13 @@ import fr.diginamic.beans.Receipt;
 
 public class ReceiptDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public ReceiptDao() {
 	}
 
 	public ReceiptDao(EntityManager em) {
-		this.em = em;
+		ReceiptDao.em = em;
 	}
 
 	public Receipt findById(Integer id) {

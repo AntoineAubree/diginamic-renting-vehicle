@@ -10,7 +10,7 @@ import fr.diginamic.beans.Make;
 
 public class MakeDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public Make findById(Integer id) {
 		Make make = em.find(Make.class, id);
@@ -38,8 +38,8 @@ public class MakeDao extends AbstractDao {
 	}
 
 	public boolean checkIfExist(String name) {
-		TypedQuery<Make> query = em.createQuery("SELECT m FROM Make m WHERE m.name = :name", Make.class);
-		query.setParameter("name", name);
+		TypedQuery<Make> query = em.createQuery("SELECT m FROM Make m WHERE LOWER(m.name) = :name", Make.class);
+		query.setParameter("name", name.toLowerCase());
 		List<Make> makeSelect = query.getResultList();
 		if (makeSelect.isEmpty()) {
 			return true;

@@ -10,13 +10,13 @@ import fr.diginamic.beans.Client;
 
 public class ClientDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public ClientDao() {
 	}
 
 	public ClientDao(EntityManager em) {
-		this.em = em;
+		ClientDao.em = em;
 	}
 
 	public Client findById(Integer id) {

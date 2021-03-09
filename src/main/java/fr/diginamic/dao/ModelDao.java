@@ -12,7 +12,7 @@ import fr.diginamic.beans.Truck;
 
 public class ModelDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public Model findById(Integer id) {
 		Model model = em.find(Model.class, id);

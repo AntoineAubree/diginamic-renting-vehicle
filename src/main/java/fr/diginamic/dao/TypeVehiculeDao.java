@@ -11,7 +11,7 @@ import fr.diginamic.beans.TypeVehicle;
 
 public class TypeVehiculeDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public void insert(TypeVehicle typeVehicle) {
 		EntityTransaction transaction = em.getTransaction();
@@ -39,9 +39,9 @@ public class TypeVehiculeDao extends AbstractDao {
 	}
 
 	public boolean checkIfExist(String name) {
-		TypedQuery<TypeVehicle> query = em.createQuery("SELECT t FROM TypeVehicle t WHERE t.name = :name",
+		TypedQuery<TypeVehicle> query = em.createQuery("SELECT t FROM TypeVehicle t WHERE LOWER(t.name) = :name",
 				TypeVehicle.class);
-		query.setParameter("name", name);
+		query.setParameter("name", name.toLowerCase());
 		List<TypeVehicle> typeVehicleSelect = query.getResultList();
 		if (typeVehicleSelect.isEmpty()) {
 			return true;

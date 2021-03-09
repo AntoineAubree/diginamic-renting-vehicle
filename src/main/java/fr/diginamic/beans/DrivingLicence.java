@@ -17,8 +17,8 @@ import javax.persistence.Enumerated;
 @Embeddable
 public class DrivingLicence {
 
-	@Column(name = "driving_licence_number")
-	private int drivingLicenceNumber;
+	@Column(name = "driving_licence_number", length = 20, nullable = false)
+	private String drivingLicenceNumber;
 	@Column(name = "obtening_date", nullable = false)
 	private LocalDate obteningDate;
 	@Enumerated(EnumType.STRING)
@@ -41,11 +41,11 @@ public class DrivingLicence {
 		return builder.toString();
 	}
 
-	public int getDrivingLicenceNumber() {
+	public String getDrivingLicenceNumber() {
 		return drivingLicenceNumber;
 	}
 
-	public void setDrivingLicenceNumber(int drivingLicenceNumber) {
+	public void setDrivingLicenceNumber(String drivingLicenceNumber) {
 		this.drivingLicenceNumber = drivingLicenceNumber;
 	}
 

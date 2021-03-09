@@ -12,13 +12,13 @@ import fr.diginamic.beans.Vehicle;
 
 public class VehicleDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public VehicleDao() {
 	}
 
 	public VehicleDao(EntityManager em) {
-		this.em = em;
+		VehicleDao.em = em;
 	}
 
 	public Vehicle findById(Integer id) {

@@ -8,13 +8,13 @@ import fr.diginamic.beans.Vehicle;
 
 public class MaintenanceDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public MaintenanceDao() {
 	}
 
 	public MaintenanceDao(EntityManager em) {
-		this.em = em;
+		MaintenanceDao.em = em;
 	}
 
 	public void insert(Maintenance maintenance) {

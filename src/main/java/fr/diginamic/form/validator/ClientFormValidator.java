@@ -114,10 +114,10 @@ public class ClientFormValidator extends FormValidator {
 		String drivingLicenceNumber = form.getValue("drivingLicenceNumber");
 		drivingLicenceNumber = drivingLicenceNumber.trim();
 		if (drivingLicenceNumber.isEmpty()) {
-			console.alert("Le numéro du permis est obligatoire.");
+			console.alert("Le numéro du permis est obligatoire");
 			return false;
-		} else if (!RegexUtils.isInteger(drivingLicenceNumber)) {
-			console.alert("Le numéro du permis doit être un entier positif.");
+		} else if (drivingLicenceNumber.length() > 20) {
+			console.alert("Le numéro du permis doit contenir maximum 20 caractères");
 			return false;
 		}
 

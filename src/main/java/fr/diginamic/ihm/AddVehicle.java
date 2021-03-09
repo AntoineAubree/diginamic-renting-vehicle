@@ -23,7 +23,6 @@ public class AddVehicle extends MenuService {
 
 		console.clear();
 		console.println("<h1 class='bg-green'><center>Ajouter un véhicule</center></h1>");
-		console.println("<p>Ajouter un modèle qui n'est pas dans la liste <a class='btn-green' href='#'><img width=25 src='images/plus-green.png'></a></p>");
 
 		String html = "<table cellspacing=0>"
 				+ "<tr class='bg-green'><td>Sélectionner</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td></tr>";
@@ -58,5 +57,5 @@ public class AddVehicle extends MenuService {
 			traitement();
 		}
 	}
-
+	
 }

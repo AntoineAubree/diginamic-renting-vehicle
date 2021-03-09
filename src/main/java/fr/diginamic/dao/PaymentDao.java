@@ -6,13 +6,13 @@ import fr.diginamic.beans.Payment;
 
 public class PaymentDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 	
 	public PaymentDao() {
 	}
 
 	public PaymentDao(EntityManager em) {
-		this.em = em;
+		PaymentDao.em = em;
 	}
 
 	public void insert(Payment payment) {

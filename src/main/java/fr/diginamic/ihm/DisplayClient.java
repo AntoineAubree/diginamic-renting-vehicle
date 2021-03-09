@@ -117,7 +117,7 @@ public class DisplayClient extends MenuService {
 			DrivingLicence drivingLicence = new DrivingLicence();
 			drivingLicence.setCategoryDrivingLicence(form.getValue("categoryDrivingLicence"));
 			String drivingLicenceNumber = form.getValue("drivingLicenceNumber");
-			drivingLicence.setDrivingLicenceNumber(Integer.parseInt(drivingLicenceNumber.trim()));
+			drivingLicence.setDrivingLicenceNumber(drivingLicenceNumber.trim());
 			drivingLicence.setObteningDate(LocalDateUtils.getDate(form.getValue("obteningDate")));
 			client.setDrivingLicence(drivingLicence);
 			

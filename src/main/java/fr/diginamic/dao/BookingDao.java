@@ -10,7 +10,7 @@ import fr.diginamic.beans.Booking;
 
 public class BookingDao extends AbstractDao {
 
-	private EntityManager em = emf.createEntityManager();
+	private static EntityManager em = emf.createEntityManager();
 
 	public Booking findById(Integer id) {
 		Booking booking = em.find(Booking.class, id);
