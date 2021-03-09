@@ -24,7 +24,7 @@ public class Client {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private int id;
 	@Column(name = "firstname", length = 50, nullable = false)
 	private String firstname;
 	@Column(name = "lastname", length = 50, nullable = false)
@@ -69,11 +69,11 @@ public class Client {
 		return builder.toString();
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

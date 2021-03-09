@@ -32,7 +32,8 @@ public class RemoveVehicleFromMaintenanceFormValidator extends FormValidator {
 			return false;
 		} 
 		
-		String reparationCost = form.getValue("reparationCost").trim();
+		String reparationCost = form.getValue("reparationCost");
+		reparationCost = reparationCost.trim();
 		if (reparationCost.isEmpty()) {
 			console.alert("Le montant des réparations doit être renseigné");
 			return false;

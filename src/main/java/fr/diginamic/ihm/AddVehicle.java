@@ -22,13 +22,11 @@ public class AddVehicle extends MenuService {
 		List<Model> models = modelDao.findAll();
 
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Ajouter un véhicule</center></h1>");
-		console.print("<h2 class='bg-green'><center>Sélectionnez le modèle</center></h2>");
-		console.print("<p>Ajouter un modèle qui n'est pas dans la liste <a class='btn-green' href='#'><img width=25 src='images/plus-green.png'></a></p>");
-		console.print("<br>");
+		console.println("<h1 class='bg-green'><center>Ajouter un véhicule</center></h1>");
+		console.println("<p>Ajouter un modèle qui n'est pas dans la liste <a class='btn-green' href='#'><img width=25 src='images/plus-green.png'></a></p>");
 
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>&nbsp;</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td></tr>";
+				+ "<tr class='bg-green'><td>Sélectionner</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td></tr>";
 		for (Model model : models) {
 			html += "<tr>" 
 					+ "  <td><a class='btn-green' href='addVehicle(" + model.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
@@ -39,19 +37,22 @@ public class AddVehicle extends MenuService {
 				+ "</tr>";
 		}
 		html += "</table>";
-		console.print(html);
+		console.println(html);
 
 	}
 
-	protected void addVehicle(Long id) {
+	protected void addVehicle(Integer id) {
 		Form form = new Form();
 		form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate"));
 		form.addInput(new TextField("Kilométrage:", "mileage", "0"));
 		VehicleFormValidator validator = new VehicleFormValidator();
+		validator.setIfNumberPlate(true);
 		boolean valide = console.input("Saisissez les informations du véhicule", form, validator);
 		if (valide) {
 			Model model = modelDao.findById(id);
-			Vehicle vehicle = new Vehicle(form.getValue("numberPlate").toUpperCase(), Float.parseFloat(form.getValue("mileage").trim()));
+			String numberPlate = form.getValue("numberPlate");
+			String mileage = form.getValue("mileage");
+			Vehicle vehicle = new Vehicle(numberPlate.toUpperCase(), Float.parseFloat(mileage.trim()));
 			vehicle.setModel(model);
 			vehicleDao.insert(vehicle);
 			traitement();

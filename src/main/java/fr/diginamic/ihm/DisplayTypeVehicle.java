@@ -21,10 +21,10 @@ public class DisplayTypeVehicle extends MenuService {
 	public void traitement() {
 		List<TypeVehicle> typesVehicle = typeVehiculeDao.findAll();
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Liste des types de véhicules</center></h1>");
-		console.print("<p>Ajouter un type de véhicule : <a class='btn-green' href='addTypeVehicle(" + 0 + ")'><img width=25 src='images/plus-green.png'></a></p>");
+		console.println("<h1 class='bg-green'><center>Gestion des types de véhicules</center></h1>");
+		console.println("<p>Ajouter un type de véhicule : <a class='btn-green' href='addTypeVehicle(" + 0 + ")'><img width=25 src='images/plus-green.png'></a></p>");
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>Catégorie</td><td>Type</td><td>Tarif journalier</td><td>Caution</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+				+ "<tr class='bg-green'><td>Catégorie</td><td>Type</td><td>Tarif journalier</td><td>Caution</td><td>Modifier</td><td>Supprimer</td></tr>";
 		for (TypeVehicle typeVehicle : typesVehicle) {
 			html += "<tr>" 
 					+ "  <td width='100px'>" + typeVehicle.getCategoryVehicle().getWording() + "</td>" 
@@ -39,7 +39,7 @@ public class DisplayTypeVehicle extends MenuService {
 		console.print(html);
 	}
 	
-	protected void addTypeVehicle(Long id) {
+	protected void addTypeVehicle(Integer id) {
 		List<Selectable> categoryVehicleSelectable = new ArrayList<>();
 		for (CategoryVehicle categoryVehicle : CategoryVehicle.values()) {
 			categoryVehicleSelectable.add(categoryVehicle);
@@ -53,17 +53,19 @@ public class DisplayTypeVehicle extends MenuService {
 		boolean valide = console.input("Saisissez les informations du type de véhicule", form, validator);
 		if (valide) {
 			TypeVehicle typeVehicle = new TypeVehicle();
-			CategoryVehicle categoryVehicle = CategoryVehicle.getById(Long.parseLong(form.getValue("categoryVehicle")));
-			typeVehicle.setCategoryVehicle(categoryVehicle);
-			typeVehicle.setName(form.getValue("name").trim());
-			typeVehicle.setDailyPrince(Float.parseFloat(form.getValue("dailyPrice").trim()));
-			typeVehicle.setGuarantee(Float.parseFloat(form.getValue("guarantee").trim()));
+			typeVehicle.setCategoryVehicle(form.getValue("categoryVehicle"));
+			String name = form.getValue("name");
+			typeVehicle.setName(name.trim());
+			String dailyPrice = form.getValue("dailyPrice");
+			typeVehicle.setDailyPrince(Float.parseFloat(dailyPrice.trim()));
+			String guarantee = form.getValue("guarantee");
+			typeVehicle.setGuarantee(Float.parseFloat(guarantee.trim()));
 			typeVehiculeDao.insert(typeVehicle);
 			traitement();
 		}
 	}
 
-	protected void updateTypeVehicle(Long id) {
+	protected void updateTypeVehicle(Integer id) {
 		List<Selectable> categoryVehicleSelectable = new ArrayList<>();
 		for (CategoryVehicle categoryVehicle : CategoryVehicle.values()) {
 			categoryVehicleSelectable.add(categoryVehicle);
@@ -78,17 +80,19 @@ public class DisplayTypeVehicle extends MenuService {
 		validator.setName(typeVehicle.getName());
 		boolean valide = console.input("Saisissez les informations du type de véhicule", form, validator);
 		if (valide) {
-			typeVehicle.setName(form.getValue("name").trim());
-			CategoryVehicle categoryVehicle = CategoryVehicle.getById(Long.parseLong(form.getValue("categoryVehicle")));
-			typeVehicle.setCategoryVehicle(categoryVehicle);
-			typeVehicle.setDailyPrince(Float.parseFloat(form.getValue("dailyPrice").trim()));
-			typeVehicle.setGuarantee(Float.parseFloat(form.getValue("guarantee").trim()));
+			String name = form.getValue("name");
+			typeVehicle.setName(name.trim());
+			typeVehicle.setCategoryVehicle(form.getValue("categoryVehicle"));
+			String dailyPrice = form.getValue("dailyPrice");
+			typeVehicle.setDailyPrince(Float.parseFloat(dailyPrice.trim()));
+			String guarantee = form.getValue("guarantee");
+			typeVehicle.setGuarantee(Float.parseFloat(guarantee.trim()));
 			typeVehiculeDao.update(typeVehicle);
 			traitement();
 		}
 	}
 
-	protected void deleteTypeVehicle(Long id) {
+	protected void deleteTypeVehicle(Integer id) {
 		TypeVehicle typeVehicle = typeVehiculeDao.findById(id);
 		if (typeVehicle.getModels().isEmpty()) {
 			typeVehiculeDao.delete(typeVehicle);

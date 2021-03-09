@@ -24,7 +24,7 @@ public class Booking {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private int id;
 	@Column(name = "start_date", nullable = false)
 	private LocalDate startDate;
 	@Column(name = "estimated_final_date", nullable = false)
@@ -50,11 +50,11 @@ public class Booking {
 	public Booking() {
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

@@ -2,6 +2,8 @@ package fr.diginamic.composants;
 
 import java.util.concurrent.Callable;
 
+import fr.diginamic.composants.error.ErrorManager;
+
 /** Traitement asynchrone permettant d'exécuter un service
  * @author RichardBONNAMY
  *
@@ -19,8 +21,14 @@ public class TraitementMenu implements Callable<Void> {
 	}
 
 	@Override
-	public Void call() throws Exception {
-		menuService.traitement();
+	public Void call() {
+		try {
+			menuService.traitement();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			e.printStackTrace();
+			ErrorManager.manage(e.getMessage(), e);
+		}
 		return null;
 	}
 

@@ -29,11 +29,12 @@ public class DisplayVehicle extends MenuService {
 
 	@Override
 	public void traitement() {
-		List<Vehicle> vehicles = vehicleDao.findAll();
+		List<Vehicle> vehicles = new ArrayList<>();
+		vehicles = vehicleDao.findAll();
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Liste des véhicules</center></h1>");
+		console.println("<h1 class='bg-green'><center>Gestion des véhicules</center></h1>");
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td><td>Plaque d'immatriculation</td><td>kilométrage</td><td>statut</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+				+ "<tr class='bg-green'><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td><td>Plaque d'immatriculation</td><td>kilométrage</td><td>statut</td><td>Maintenance</td><td>Modifier</td><td>Supprimer</td></tr>";
 		for (Vehicle vehicle : vehicles) {
 			html += "<tr>" 
 					+ "  <td width='100px'>" + vehicle.getModel().getCategory() + "</td>" 
@@ -43,16 +44,16 @@ public class DisplayVehicle extends MenuService {
 					+ "  <td width='100px'>" + vehicle.getNumberPlate() + "</td>" 
 					+ "  <td width='100px'>" + vehicle.getMileage() + "</td>" 
 					+ "  <td width='100px'>" + vehicle.getStatusVehicle().getWording() + "</td>"
-					+ "  <td><a class='btn-red' href='maintenanceManagementVehicle(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></td>"
-					+ "  <td><a class='btn-blue' href='updateVehicle(" + vehicle.getId() + ")'><img width=25 src='images/pencil-blue-xs.png'></a></td>"
-					+ "  <td><a class='btn-red' href='deleteVehicle(" + vehicle.getId() + ")'><img width=25 src='images/trash-red-xs.png'></a></td>"
+					+ "  <td><center><a class='btn-red' href='maintenanceManagementVehicle(" + vehicle.getId() + ")'><img width=25 src='images/settings.png'></a></center></td>"
+					+ "  <td><center><a class='btn-blue' href='updateVehicle(" + vehicle.getId() + ")'><img width=25 src='images/pencil-blue-xs.png'></a></center></td>"
+					+ "  <td><center><a class='btn-red' href='deleteVehicle(" + vehicle.getId() + ")'><img width=25 src='images/trash-red-xs.png'></a></center></td>"
 				+ "</tr>";
 		}
 		html += "</table>";
-		console.print(html);
+		console.println(html);
 	}
 
-	protected void maintenanceManagementVehicle(Long id) {
+	protected void maintenanceManagementVehicle(Integer id) {
 		Vehicle vehicle = vehicleDao.findById(id);
 		if (vehicle.getStatusVehicle().equals(StatusVehicle.AVAILABLE)) {
 			putVehicleInMaintenance(vehicle);
@@ -72,7 +73,8 @@ public class DisplayVehicle extends MenuService {
 		validator.setMaintenance(maintenance);
 		boolean valide = console.input("Sortir de maintennace le véhicule immatriculé : " + vehicle.getNumberPlate(), form, validator);
 		if (valide) {
-			maintenance.setReparationCost(Float.parseFloat(form.getValue("reparationCost").trim()));
+			String reparationCost = form.getValue("reparationCost");
+			maintenance.setReparationCost(Float.parseFloat(reparationCost.trim()));
 			maintenance.setFinalDate(LocalDateUtils.getDate(form.getValue("finalDate")));
 			maintenanceDao.finishMaintenance(maintenance);
 			traitement();
@@ -93,7 +95,7 @@ public class DisplayVehicle extends MenuService {
 		}
 	}
 	
-	protected void updateVehicle(Long id) {
+	protected void updateVehicle(Integer id) {
 		Vehicle vehicle = vehicleDao.findById(id);
 		List<Model> models = modelDao.findAll();
 		int idModel = 0;
@@ -106,30 +108,36 @@ public class DisplayVehicle extends MenuService {
 		List<Selectable> modelsSelectable = new ArrayList<>();
 		modelsSelectable.addAll(models);
 		Form form = new Form();
+		VehicleFormValidator validator = new VehicleFormValidator();
+		validator.setIfComment(true);
 		if (vehicle.getBookings().isEmpty()) {
 			form.addInput(new TextField("Plaque d'immatriculation:", "numberPlate", vehicle.getNumberPlate()));
+			validator.setIfNumberPlate(true);
 		}
 		form.addInput(new ComboBox("Véhicule:", "model", modelsSelectable,
 				modelsSelectable.get(idModel)));
 		form.addInput(new TextField("Kilométrage:", "mileage", Float.toString(vehicle.getMileage())));
 		form.addInput(new TextField("Commentaire:", "comment", vehicle.getComment()));
-		VehicleFormValidator validator = new VehicleFormValidator();
 		validator.setNumberPlate(vehicle.getNumberPlate());
 		boolean valide = console.input("Saisissez les informations du véhicules", form, validator);
 		if (valide) {
 			if (vehicle.getBookings().isEmpty()) {
-				vehicle.setNumberPlate(form.getValue("numberPlate").toUpperCase());
+				String numberPlate = form.getValue("numberPlate");
+				vehicle.setNumberPlate(numberPlate.toUpperCase());
 			}
-			Model model = modelDao.findById(Long.parseLong(form.getValue("model")));
+			Model model = form.getValue("model");
 			vehicle.setModel(model);
-			vehicle.setMileage(Float.parseFloat(form.getValue("mileage").trim()));
-			vehicle.setComment(form.getValue("comment").trim());
+			String mileage = form.getValue("mileage");
+			vehicle.setMileage(Float.parseFloat(mileage.trim()));
+			String comment = form.getValue("comment");
+			vehicle.setComment(comment.trim());
+			System.out.println(vehicle);
 			vehicleDao.update(vehicle);
 			traitement();
 		}
 	}
 
-	protected void deleteVehicle(Long id) {
+	protected void deleteVehicle(Integer id) {
 		Vehicle vehicle = vehicleDao.findById(id);
 		if (vehicle.getBookings().isEmpty()) {
 			vehicleDao.delete(vehicle);

@@ -1,8 +1,15 @@
 package fr.diginamic.composants.reflect;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.reflect.ClassPath;
 
@@ -66,13 +73,7 @@ public class ReflectUtils {
 			if (classe==null) {
 				ErrorManager.manage("La classe " + className + " n'existe pas.");
 			}
-			if (parameter.isEmpty()) {
-				callMethod(classe, methodName, null);
-			}
-			else {
-				Long id = Long.parseLong(parameter);	
-				callMethod(classe, methodName, id);
-			}
+			instantiateClassAndInvokeMethod(classe, methodName, parameter);
 		}
 		else if (chaineInvocation.contains("(") && chaineInvocation.contains(")")){
 			
@@ -81,12 +82,13 @@ public class ReflectUtils {
 					chaineInvocation.indexOf(")"));
 			
 			Class<?> classe = AbstractApplication.currentMenuService.getClass();
-			if (parameter.isEmpty()) {
-				callMethod(classe, methodName, null);
-			}
-			else {
-				Long id = Long.parseLong(parameter);
-				callMethod(classe, methodName, id);
+			instantiateClassAndInvokeMethod(classe, methodName, parameter);
+		}
+		else {
+			try {
+				Desktop.getDesktop().browse(new java.net.URI(chaineInvocation));
+			} catch (IOException | URISyntaxException e) {
+				ErrorManager.manage("Impossible d'accéder à l'URL "+chaineInvocation, e);
 			}
 		}
 	}
@@ -96,7 +98,7 @@ public class ReflectUtils {
 	 * @param methodName nom de la méthode
 	 * @param id identifiant
 	 */
-	private static void callMethod(Class<?> classe, String methodName, Long id) {
+	private static void instantiateClassAndInvokeMethod(Class<?> classe, String methodName, String parameter) {
 		Object obj = null;
 		try {
 			if (classe != null) {
@@ -113,21 +115,63 @@ public class ReflectUtils {
 			ErrorManager.manage(msg, e);
 		}
 		try {
-			Method method = null;
-			if (id!=null) {
-				method = classe.getDeclaredMethod(methodName, Long.class);
-				method.setAccessible(true);
-				method.invoke(obj, id);
-			}
-			else {
-				method = classe.getDeclaredMethod(methodName);
-				method.setAccessible(true);
-				method.invoke(obj);
-			}
-			
+			invokeMethod(classe, methodName, parameter, obj);
 		} catch (ReflectiveOperationException e) {
 			e.printStackTrace();
 			ErrorManager.manage(e.getMessage(), e);
 		}
+	}
+
+	private static void invokeMethod(Class<?> classe, String methodName, String parameter, Object obj)
+			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		Method method = null;
+		if (StringUtils.isNotEmpty(parameter)) {
+			method = findMethodByName(classe, methodName, true);
+			if (method!=null) {
+				method.setAccessible(true);
+				Class<?> parameterType = method.getParameterTypes()[0];
+				if (parameterType.equals(Long.class) || parameterType.equals(long.class)) {
+					method.invoke(obj, Long.parseLong(parameter));
+				}
+				else if (parameterType.equals(Integer.class) || parameterType.equals(Integer.class)) {
+					method.invoke(obj, Integer.parseInt(parameter));
+				}
+				else {
+					method.invoke(obj, parameter);
+				}
+			}
+			else {
+				ErrorManager.manage("La méthode "+methodName+" n'existe pas dans la classe "+classe.getSimpleName());
+			}
+		}
+		else {
+			method = findMethodByName(classe, methodName, false);
+			method.setAccessible(true);
+			method.invoke(obj);
+		}
+	}
+	
+	public static Method findMethodByName(Class<?> origin, String methodName, boolean hasParameter) {
+		if (origin.getName().equals("java.lang.Object")) {
+			return null;
+		}
+		if (hasParameter) {
+			List<Class<?>> possibleTypes = Arrays.asList(Long.class, Integer.class, long.class, int.class, String.class);
+			for (Class<?> type: possibleTypes) {
+				try {
+					Method m = origin.getDeclaredMethod(methodName, type);
+					return m;
+				} catch (NoSuchMethodException | SecurityException e) {
+				}
+			}
+		}
+		else {
+			try {
+				Method m = origin.getDeclaredMethod(methodName);
+				return m;
+			} catch (NoSuchMethodException | SecurityException e) {
+			}
+		}
+		return findMethodByName(origin.getSuperclass(), methodName, hasParameter);
 	}
 }

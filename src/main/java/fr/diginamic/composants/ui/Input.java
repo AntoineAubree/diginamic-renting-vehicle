@@ -18,6 +18,9 @@ public abstract class Input {
 	
 	/** Largeur en pixels du champ de saisie */
 	private int width;
+	
+	/** editable */
+	private boolean editable;
 
 	/** Constructeur
 	 * @param label libellé du champ de saisie
@@ -46,7 +49,7 @@ public abstract class Input {
 	/** Retourne la valeur saisie par l'utilisateur
 	 * @return String
 	 */
-	public abstract String getValue();
+	public abstract <T> T getValue();
 	
 	/**
 	 * @param value
@@ -98,5 +101,19 @@ public abstract class Input {
 	 */
 	public void setWidth(int width) {
 		this.width = width;
+	}
+
+	/** Getter
+	 * @return the editable
+	 */
+	boolean isEditable() {
+		return editable;
+	}
+
+	/** Setter
+	 * @param editable the editable to set
+	 */
+	void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }

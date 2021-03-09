@@ -19,7 +19,9 @@ import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
-/** Application mère de type SWING.
+/**
+ * Application mère de type SWING.
+ * 
  * @author RichardBONNAMY
  *
  */
@@ -31,18 +33,21 @@ public abstract class AbstractApplication extends JFrame {
 	private int width = 1400;
 	/** height */
 	private int height = 718;
-	
+
 	/** Catégories principales de menu */
 	private Map<Integer, JMenu> categories = new HashMap<>();
-	
+
 	/** Barre de menu */
 	protected JMenuBar menuBar = new JMenuBar();
-	
-	/** Pour l'exécution des use case (i.e. classes de services associées à une option de menu) */
+
+	/**
+	 * Pour l'exécution des use case (i.e. classes de services associées à une
+	 * option de menu)
+	 */
 	private static ExecutorService threadService = Executors.newFixedThreadPool(3);
-	
+
 	/** Classe de service en cours de traitement */
-	public static MenuService currentMenuService; 
+	public static MenuService currentMenuService;
 
 	/**
 	 * Constructeur
@@ -70,60 +75,62 @@ public abstract class AbstractApplication extends JFrame {
 		// Sinon par défaut l'application apparait en haut à gauche.
 		setLocation(x, y);
 	}
-	
-	/** Ajoute une catégorie de menu à la barre de menu
-	 * @param id identifiant
+
+	/**
+	 * Ajoute une catégorie de menu à la barre de menu
+	 * 
+	 * @param id           identifiant
 	 * @param categoryName nom de la catégorie
 	 */
 	public void addMenu(Integer id, String categoryName) {
 		JMenu menuCateg = new JMenu(categoryName);
 		menuBar.add(menuCateg);
-		
+
 		categories.put(id, menuCateg);
 	}
-	
-	/** Ajoute une option de menu à une catégorie dont l'id est passé en paramètre.
-	 * L'option de menu est obligatoirement associée à une classe de service qui hérite
-	 * de {@link MenuService}
-	 * @param id id
-	 * @param name name
+
+	/**
+	 * Ajoute une option de menu à une catégorie dont l'id est passé en paramètre.
+	 * L'option de menu est obligatoirement associée à une classe de service qui
+	 * hérite de {@link MenuService}
+	 * 
+	 * @param id          id
+	 * @param name        name
 	 * @param menuService classe de service
 	 */
 	public void addMenuOption(Integer id, String name, MenuService menuService) {
-		
+
 		menuService.setApplication(this);
-		
+
 		JMenu menuCateg = categories.get(id);
-		if (menuCateg!=null) {
+		if (menuCateg != null) {
 			JMenuItem menuItem = new JMenuItem(name);
 			menuCateg.add(menuItem);
 			menuItem.addMouseListener(new MouseListener() {
-				
+
 				@Override
 				public void mouseReleased(MouseEvent e) {
-				}
-				
-				@Override
-				public void mousePressed(MouseEvent e) {
-					
 					currentMenuService = menuService;
-					
+
 					TraitementMenu tt = new TraitementMenu(menuService);
 					threadService.submit(tt);
 				}
-				
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+
+				}
+
 				@Override
 				public void mouseExited(MouseEvent e) {
 				}
-				
+
 				@Override
 				public void mouseEntered(MouseEvent e) {
 				}
-				
+
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					TraitementMenu tt = new TraitementMenu(menuService);
-					threadService.submit(tt);
 				}
 			});
 		}
@@ -133,23 +140,24 @@ public abstract class AbstractApplication extends JFrame {
 	 * Construit l'interface graphique principale avec:<br>
 	 * - un menu<br>
 	 * - des styles CSS<br>
-	 * - une JTextPane (la console) qui va permettre d'afficher tout ce qu'on a à afficher 
-	 * et également d'activer des formulaires.
+	 * - une JTextPane (la console) qui va permettre d'afficher tout ce qu'on a à
+	 * afficher et également d'activer des formulaires.
 	 * 
 	 */
 	public void buildInterfaceGraphique() {
 		this.setLayout(null);
-		
+
 		HTMLEditorKit htmlEditorKit = new HTMLEditorKit();
-		
+
 		HTMLDocument htmlDocument = (HTMLDocument) htmlEditorKit.createDefaultDocument();
 		StyleSheet style = htmlDocument.getStyleSheet();
 		htmlEditorKit.setStyleSheet(style);
-		style.addRule("body { font-family:'Arial';}");
-		
-		style.addRule("table { border: solid 0px black;border-spacing:0px;border-margin:0px;}");
-		style.addRule("td { border: solid 1px black; padding-top:0px; padding-bottom:0px; padding-left:4px;padding-right:4px;}");
-		
+		style.addRule("body { font-family:'Arial'; color:#000000;}");
+
+		style.addRule(".table { border: solid 0px black;border-spacing:0px;border-margin:0px;}");
+		style.addRule(
+				".table td { border: solid 1px black; padding-top:0px; padding-bottom:0px; padding-left:4px;padding-right:4px;}");
+
 		style.addRule(".bg-dark-blue { color: #FFFFFF; background: #0C0F46; font-weight:bold; }");
 		style.addRule(".bg-blue { color: #FFFFFF; background: #007bff; font-weight:bold; }");
 		style.addRule(".bg-red { color: #FFFFFF; background: #dc3545; font-weight:bold;  }");
@@ -158,7 +166,7 @@ public abstract class AbstractApplication extends JFrame {
 		style.addRule(".bg-orange { color: #FFFFFF; background: #ffc107; font-weight:bold;  }");
 		style.addRule(".bg-turquoise { color: #FFFFFF; background: #17a2b8; font-weight:bold;  }");
 		style.addRule(".bg-yellow { color: #333333; background: #FFFF00; font-weight:bold;  }");
-		
+
 		style.addRule(".btn-blue { color: #FFFFFF; background: #007bff; }");
 		style.addRule(".btn-red { color: #FFFFFF; background: #dc3545; }");
 		style.addRule(".btn-green { color: #FFFFFF; background: #28a745;  text-decoration: none; }");
@@ -166,7 +174,7 @@ public abstract class AbstractApplication extends JFrame {
 		style.addRule(".btn-orange { color: #FFFFFF; background: #ffc107;  text-decoration: none; }");
 		style.addRule(".btn-turquoise { color: #FFFFFF; background: #17a2b8;  text-decoration: none; }");
 		style.addRule(".btn-yellow { color: #000000; background: #FFFF00;  text-decoration: none; }");
-		
+
 		// La mise à NULL du Layout permet d'afficher tous les éléments de l'interface
 		// graphique en coordonnées X, Y
 
@@ -178,16 +186,16 @@ public abstract class AbstractApplication extends JFrame {
 		afficheur.setContentType("text/html");
 		afficheur.setEditorKit(htmlEditorKit);
 		afficheur.setDocument(htmlDocument);
-		afficheur.addHyperlinkListener(new HyperlinkListener(){
-		    @Override
-		    public void hyperlinkUpdate(HyperlinkEvent e) {
-		    	if ( e.getEventType() == HyperlinkEvent.EventType.ACTIVATED ){
-		    		TraitementInvocation tt = new TraitementInvocation(e.getDescription());
-		    		threadService.submit(tt);
-		        }
-		    }
+		afficheur.addHyperlinkListener(new HyperlinkListener() {
+			@Override
+			public void hyperlinkUpdate(HyperlinkEvent e) {
+				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+					TraitementInvocation tt = new TraitementInvocation(e.getDescription());
+					threadService.submit(tt);
+				}
+			}
 		});
-		
+
 		Console.afficheur = afficheur;
 
 		// Création d'un JScrollPane qui va permettre d'ajouter des barres de défilement
@@ -197,19 +205,19 @@ public abstract class AbstractApplication extends JFrame {
 
 		// On ajoute le JScrollPane à l'interface graphique.
 		this.add(sp);
-		
+
 		// Ajout de la barre de menu
 		this.setJMenuBar(menuBar);
-		
+
 		this.main();
 
 		// On rend l'interface graphique visible par défaut, ce qui est préférable.
 		this.setVisible(true);
 	}
-	
+
 	/**
-	 * Les classes filles doivent implémenter cette méthode, qui va permettre notamment d'effectuer
-	 * les traitements de démarrage et de créer le menu
+	 * Les classes filles doivent implémenter cette méthode, qui va permettre
+	 * notamment d'effectuer les traitements de démarrage et de créer le menu
 	 */
 	public abstract void main();
 }

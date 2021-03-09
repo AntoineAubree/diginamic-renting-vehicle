@@ -10,5 +10,5 @@ public interface Selectable {
 	 * C'est cet id qui sera transmis lorsque l'utilisateur aura fait sa sélection.
 	 * @return Long
 	 */
-	Long getId();
+	Integer getId();
 }

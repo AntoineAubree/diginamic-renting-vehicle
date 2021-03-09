@@ -23,7 +23,8 @@ public class ClientFormValidator extends FormValidator {
 
 	@Override
 	public boolean validate(Form form) {
-		String firstname = form.getValue("firstname").trim();
+		String firstname = form.getValue("firstname");
+		firstname = firstname.trim();
 		if (firstname.isEmpty() || !RegexUtils.containsOnlyLetterOrMinusCharactereOrSpace(firstname)
 				|| firstname.length() > 50) {
 			console.alert(
@@ -31,7 +32,8 @@ public class ClientFormValidator extends FormValidator {
 			return false;
 		}
 
-		String lastname = form.getValue("lastname").trim();
+		String lastname = form.getValue("lastname");
+		lastname = lastname.trim();
 		if (lastname.isEmpty() || !RegexUtils.containsOnlyLetterOrMinusCharactereOrSpace(lastname)
 				|| lastname.length() > 50) {
 			console.alert(
@@ -39,7 +41,8 @@ public class ClientFormValidator extends FormValidator {
 			return false;
 		}
 
-		String phoneNumber = form.getValue("phoneNumber").trim();
+		String phoneNumber = form.getValue("phoneNumber");
+		phoneNumber = phoneNumber.trim();
 		if (phoneNumber.length() != 10) {
 			console.alert("Le numéro de téléphone est obligatoire et doit contenir 10 caractères");
 			return false;
@@ -54,7 +57,8 @@ public class ClientFormValidator extends FormValidator {
 			}
 		}
 
-		String email = form.getValue("email").trim();
+		String email = form.getValue("email");
+		email = email.trim();
 		String[] emailPieces = email.split("@");
 		if (email.length() > 80) {
 			console.alert("L'email est obligatoire (80 caractères maximum)");
@@ -70,7 +74,8 @@ public class ClientFormValidator extends FormValidator {
 			}
 		}
 
-		String streetNumber = form.getValue("streetNumber").trim();
+		String streetNumber = form.getValue("streetNumber");
+		streetNumber = streetNumber.trim();
 		if (streetNumber.isEmpty()) {
 			console.alert("Le numéro de rue est obligatoire.");
 			return false;
@@ -79,13 +84,15 @@ public class ClientFormValidator extends FormValidator {
 			return false;
 		}
 
-		String streetWording = form.getValue("streetWording").trim();
+		String streetWording = form.getValue("streetWording");
+		streetWording = streetWording.trim();
 		if (streetWording.isEmpty() || streetWording.length() > 50) {
 			console.alert("Le libellé de voie est obligatoire (50 caractères maximum)");
 			return false;
 		}
 
-		String postCode = form.getValue("postCode").trim();
+		String postCode = form.getValue("postCode");
+		postCode = postCode.trim();
 		if (postCode.length() != 5) {
 			console.alert("Le code postal est obligatoire et doit contenir 5 chiffres");
 			return false;
@@ -97,13 +104,15 @@ public class ClientFormValidator extends FormValidator {
 			}
 		}
 
-		String city = form.getValue("city").trim();
+		String city = form.getValue("city");
+		city = city.trim();
 		if (city.isEmpty() || city.length() > 50) {
 			console.alert("La ville est obligatoire (50 caractères maximum)");
 			return false;
 		}
 
-		String drivingLicenceNumber = form.getValue("drivingLicenceNumber").trim();
+		String drivingLicenceNumber = form.getValue("drivingLicenceNumber");
+		drivingLicenceNumber = drivingLicenceNumber.trim();
 		if (drivingLicenceNumber.isEmpty()) {
 			console.alert("Le numéro du permis est obligatoire.");
 			return false;

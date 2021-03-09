@@ -32,7 +32,8 @@ public class RemoveVehicleFromBookingFormValidator extends FormValidator {
 			return false;
 		}
 
-		String finalMileage = form.getValue("finalMileage").trim();
+		String finalMileage = form.getValue("finalMileage");
+		finalMileage = finalMileage.trim();
 		if (finalMileage.isEmpty()) {
 			console.alert("Le kilométrage de fin est obligatoire");
 			return false;
@@ -44,7 +45,8 @@ public class RemoveVehicleFromBookingFormValidator extends FormValidator {
 			return false;
 		}
 		
-		String comment = form.getValue("comment").trim();
+		String comment = form.getValue("comment");
+		comment = comment.trim();
 		if (comment.length() > 400) {
 			console.alert("Le commentaire doit contenir moins de 400 caractères");
 			return false;

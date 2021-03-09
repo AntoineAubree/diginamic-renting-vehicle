@@ -27,7 +27,7 @@ public class TypeVehicle {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private int id;
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	@Column(name = "daily_price")
@@ -67,11 +67,11 @@ public class TypeVehicle {
 		return builder.toString();
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

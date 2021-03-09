@@ -25,7 +25,7 @@ public class TypeVehiculeDao extends AbstractDao {
 		return typesVehicleSelect;
 	}
 
-	public TypeVehicle findById(Long id) {
+	public TypeVehicle findById(Integer id) {
 		TypeVehicle typeVehicle = em.find(TypeVehicle.class, id);
 		return typeVehicle;
 	}

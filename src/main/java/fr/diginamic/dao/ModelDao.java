@@ -11,7 +11,7 @@ public class ModelDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
 
-	public Model findById(Long id) {
+	public Model findById(Integer id) {
 		Model model = em.find(Model.class, id);
 		return model;
 	}

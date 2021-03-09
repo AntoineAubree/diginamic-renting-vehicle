@@ -17,10 +17,10 @@ public class DisplayMake extends MenuService {
 	public void traitement() {
 		List<Make> makes = makeDao.findAll();
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Liste des marques de véhicules</center></h1>");
-		console.print("<p>Ajouter une marque : <a class='btn-green' href='addMake(" + 0 + ")'><img width=25 src='images/plus-green.png'></a></p>");
+		console.println("<h1 class='bg-green'><center>Gestion des marques de véhicules</center></h1>");
+		console.println("<p>Ajouter une marque : <a class='btn-green' href='addMake(" + 0 + ")'><img width=25 src='images/plus-green.png'></a></p>");
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>Nom</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+				+ "<tr class='bg-green'><td>Nom</td><td>Modifier</td><td>Supprimer</td></tr>";
 		for (Make make : makes) {
 			html += "<tr>" 
 					+ "  <td width='100px'>" + make.getName() + "</td>" 
@@ -29,22 +29,23 @@ public class DisplayMake extends MenuService {
 				+ "</tr>";
 		}
 		html += "</table>";
-		console.print(html);
+		console.println(html);
 	}
 	
-	protected void addMake(Long id) {
+	protected void addMake(Integer id) {
 		Form form = new Form();
 		form.addInput(new TextField("Nom de la marque:", "name"));
 		MakeFormValidator validator = new MakeFormValidator();
 		boolean valide = console.input("Saisissez les informations de la marque", form, validator);
 		if (valide) {
-			Make make = new Make(form.getValue("name").trim());
+			String name = form.getValue("name");
+			Make make = new Make(name.trim());
 			makeDao.insert(make);
 			traitement();
 		}
 	}
 
-	protected void updateMake(Long id) {
+	protected void updateMake(Integer id) {
 		Make make = makeDao.findById(id);
 		Form form = new Form();
 		form.addInput(new TextField("Nom de la marque:", "name", make.getName()));
@@ -52,13 +53,14 @@ public class DisplayMake extends MenuService {
 		validator.setName(make.getName());
 		boolean valide = console.input("Saisissez les informations de la marque", form, validator);
 		if (valide) {
-			make.setName(form.getValue("name").trim());
+			String name = form.getValue("name");
+			make.setName(name.trim());
 			makeDao.update(make);
 			traitement();
 		}
 	}
 
-	protected void deleteMake(Long id) {
+	protected void deleteMake(Integer id) {
 		Make make = makeDao.findById(id);
 		if (make.getModels().isEmpty()) {
 			makeDao.delete(make);

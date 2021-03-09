@@ -13,7 +13,7 @@ import fr.diginamic.beans.Vehicle;
 public class VehicleDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
-	
+
 	public VehicleDao() {
 	}
 
@@ -21,7 +21,7 @@ public class VehicleDao extends AbstractDao {
 		this.em = em;
 	}
 
-	public Vehicle findById(Long id) {
+	public Vehicle findById(Integer id) {
 		Vehicle vehicle = em.find(Vehicle.class, id);
 		return vehicle;
 	}
@@ -33,7 +33,7 @@ public class VehicleDao extends AbstractDao {
 		List<Vehicle> vehicles = query.getResultList();
 		return vehicles;
 	}
-	
+
 	public List<Vehicle> findAllAvailable() {
 		TypedQuery<Vehicle> query = em.createQuery(
 				"SELECT v FROM Vehicle v JOIN v.model mo JOIN mo.typeVehicle t JOIN mo.make ma WHERE v.statusVehicle = :statusVehicle ORDER BY t.categoryVehicle, t.name, ma.name, mo.name",
@@ -80,12 +80,12 @@ public class VehicleDao extends AbstractDao {
 	}
 
 	public void putInMaintenance(Vehicle vehicle) {
-		vehicle.setStatusVehicle(StatusVehicle.MAINTENANCE);;
+		vehicle.setStatusVehicle(StatusVehicle.MAINTENANCE);
 		em.merge(vehicle);
 	}
 
 	public void removeFromMaitenance(Vehicle vehicle) {
-		vehicle.setStatusVehicle(StatusVehicle.AVAILABLE);;
+		vehicle.setStatusVehicle(StatusVehicle.AVAILABLE);
 		em.merge(vehicle);
 	}
 
@@ -99,15 +99,13 @@ public class VehicleDao extends AbstractDao {
 	}
 
 	public void putInBooking(Vehicle vehicle) {
-		vehicle.setStatusVehicle(StatusVehicle.RENTED);;
+		vehicle.setStatusVehicle(StatusVehicle.RENTED);
 		em.merge(vehicle);
 	}
 
 	public void removeFromBooking(Vehicle vehicle) {
-		vehicle.setStatusVehicle(StatusVehicle.AVAILABLE);;
+		vehicle.setStatusVehicle(StatusVehicle.AVAILABLE);
 		em.merge(vehicle);
 	}
-
-
 
 }

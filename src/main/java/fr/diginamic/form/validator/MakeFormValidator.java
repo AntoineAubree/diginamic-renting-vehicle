@@ -17,7 +17,8 @@ public class MakeFormValidator extends FormValidator {
 
 	@Override
 	public boolean validate(Form form) {
-		String name = form.getValue("name").trim();
+		String name = form.getValue("name");
+		name = name.trim();
 		if (name.isEmpty() || name.length() > 100) {
 			console.alert("Le nom de la marque est obigatoire (100 caractères maximum)");
 			return false;

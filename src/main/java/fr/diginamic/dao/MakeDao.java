@@ -12,7 +12,7 @@ public class MakeDao extends AbstractDao {
 
 	private EntityManager em = emf.createEntityManager();
 
-	public Make findById(Long id) {
+	public Make findById(Integer id) {
 		Make make = em.find(Make.class, id);
 		return make;
 	}

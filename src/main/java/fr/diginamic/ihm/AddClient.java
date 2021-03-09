@@ -30,7 +30,7 @@ public class AddClient extends MenuService {
 		}
 
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Ajouter un véhicule</center></h1>");
+		console.println("<h1 class='bg-green'><center>Ajouter un Client</center></h1>");
 		Form form = new Form();
 		form.addInput(new TextField("Prénom:", "firstname"));
 		form.addInput(new TextField("Nom:", "lastname"));
@@ -47,22 +47,30 @@ public class AddClient extends MenuService {
 		boolean valide = console.input("Saisissez les informations du client", form, validator);
 		if (valide) {
 			Client client = new Client();
-			client.setFirstname(form.getValue("firstname").trim());
-			client.setLastname(form.getValue("lastname").trim());
-			client.setPhoneNumber(form.getValue("phoneNumber").trim());
-			client.setEmail(form.getValue("email").trim());
+			String firstname = form.getValue("firstname");
+			client.setFirstname(firstname.trim());
+			String lastname = form.getValue("lastname");
+			client.setLastname(lastname.trim());
+			String phoneNumber = form.getValue("phoneNumber");
+			client.setPhoneNumber(phoneNumber.trim());
+			String email = form.getValue("email");
+			client.setEmail(email.trim());
 			
 			Address address = new Address();
-			address.setStreetNumber(Integer.parseInt(form.getValue("streetNumber").trim()));
-			address.setStreetWording(form.getValue("streetWording").trim());
-			address.setPostcode(form.getValue("postCode").trim());
-			address.setCity(form.getValue("city").trim());
+			String streetNumber = form.getValue("streetNumber");
+			address.setStreetNumber(Integer.parseInt(streetNumber.trim()));
+			String streetWording = form.getValue("streetWording");
+			address.setStreetWording(streetWording.trim());
+			String postCode = form.getValue("postCode");
+			address.setPostcode(postCode.trim());
+			String city = form.getValue("city");
+			address.setCity(city.trim());
 			client.setAddress(address);
 			
 			DrivingLicence drivingLicence = new DrivingLicence();
-			CategoryDrivingLicence categoryDrivingLicence = CategoryDrivingLicence.getById(Long.parseLong(form.getValue("categoryDrivingLicence")));
-			drivingLicence.setCategoryDrivingLicence(categoryDrivingLicence);
-			drivingLicence.setDrivingLicenceNumber(Integer.parseInt(form.getValue("drivingLicenceNumber").trim()));
+			drivingLicence.setCategoryDrivingLicence(form.getValue("categoryDrivingLicence"));
+			String drivingLicenceNumber = form.getValue("drivingLicenceNumber");
+			drivingLicence.setDrivingLicenceNumber(Integer.parseInt(drivingLicenceNumber.trim()));
 			drivingLicence.setObteningDate(LocalDateUtils.getDate(form.getValue("obteningDate")));
 			client.setDrivingLicence(drivingLicence);
 			

@@ -24,14 +24,14 @@ public class Receipt {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private int id;
 	@Column(name = "number")
-	private int number;
+	private String number;
 	@Column(name = "booking_cost")
 	private float bookingCost;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status_receipt", length = 15, nullable = false)
-	private StatusReceipt statusreceipt;
+	private StatusReceipt statusReceipt;
 	@ManyToOne
 	@JoinColumn(name = "id_client", nullable = false)
 	private Client client;
@@ -54,8 +54,8 @@ public class Receipt {
 		builder.append(number);
 		builder.append(", bookingCost=");
 		builder.append(bookingCost);
-		builder.append(", statusreceipt=");
-		builder.append(statusreceipt);
+		builder.append(", statusReceipt=");
+		builder.append(statusReceipt);
 		builder.append(", client=");
 		builder.append(client);
 		builder.append(", payment=");
@@ -64,19 +64,19 @@ public class Receipt {
 		return builder.toString();
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public int getNumber() {
+	public String getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 
@@ -88,12 +88,12 @@ public class Receipt {
 		this.bookingCost = bookingCost;
 	}
 
-	public StatusReceipt getStatusreceipt() {
-		return statusreceipt;
+	public StatusReceipt getStatusReceipt() {
+		return statusReceipt;
 	}
 
-	public void setStatusreceipt(StatusReceipt statusreceipt) {
-		this.statusreceipt = statusreceipt;
+	public void setStatusReceipt(StatusReceipt statusReceipt) {
+		this.statusReceipt = statusReceipt;
 	}
 
 	public Client getClient() {

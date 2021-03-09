@@ -2,15 +2,20 @@ package fr.diginamic.composants;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
@@ -18,13 +23,15 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import fr.diginamic.Launcher;
+import fr.diginamic.composants.error.ErrorManager;
 import fr.diginamic.composants.html.HtmlUtils;
 import fr.diginamic.composants.ui.Form;
 import fr.diginamic.composants.ui.Input;
@@ -39,6 +46,9 @@ import fr.diginamic.composants.validator.FormValidator;
  */
 public class Console {
 
+	/** holder */
+	public static final List<Boolean> holder = new LinkedList<Boolean>();
+
 	/**
 	 * FONT_18 : police par défaut utilisée pour la construction de tous les
 	 * composants graphiques
@@ -49,9 +59,9 @@ public class Console {
 	public static final Font FONT_16 = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 	public static final Font FONT_18 = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
 	/**
-	 * dimension : classe qui fournit des informations sur l'écran du PC utilisé
-	 * et notamment ses dimensions. Cette classe intervient dans le calcul de
-	 * centrage des composants graphiques
+	 * dimension : classe qui fournit des informations sur l'écran du PC utilisé et
+	 * notamment ses dimensions. Cette classe intervient dans le calcul de centrage
+	 * des composants graphiques
 	 */
 	private static Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -92,29 +102,27 @@ public class Console {
 		return (int) ((dimension.getWidth() - component.getWidth()) / 2);
 	}
 
-	/** Permet d'activer un formulaire SWING.
-	 * La méthode est synchrone, c'est à dire que la méthode ne rend la main que lorsque le
-	 * formateur a cliqué sur Valider (return true) ou Annuler (return false).
+	/**
+	 * Permet d'activer un formulaire SWING. La méthode est synchrone, c'est à dire
+	 * que la méthode ne rend la main que lorsque le formateur a cliqué sur Valider
+	 * (return true) ou Annuler (return false).
 	 * 
 	 * @param titreFormulaire titre du formulaire
-	 * @param form formulaire
+	 * @param form            formulaire
 	 * @return boolean
 	 */
 	public boolean input(String titreFormulaire, final Form form, final FormValidator formValidator) {
 
 		JFrame fenetreRecherche = new JFrame(titreFormulaire);
+		Container container = fenetreRecherche.getContentPane();
+		container.setLayout(new GridBagLayout());
+
+		GridBagConstraints gbc = new GridBagConstraints();
 
 		// Lorsqu'on ferme une fenêtre secondaire on ne souhaite pas arrêter
 		// l'application
 		// mais simplement la masquer.
 		fenetreRecherche.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		// Dans chaque fenêtre secondaire les composants graphiques seront positionnés
-		// en coordonnées x,y d'où la suppression du layout
-		fenetreRecherche.getContentPane().setLayout(null);
-
-		// Par défaut les fenêtres secondaires ne sont pas visibles.
-		fenetreRecherche.setVisible(false);
 
 		// On réalise une boucle sur le tableau de questions pour générer et
 		// positionner
@@ -160,48 +168,75 @@ public class Console {
 
 			// Création du label
 			JLabel label = new JLabel(input.getLabel());
-			label.setBounds(10, 18 + i * 30, maxLabelWidth, 20);
+			label.setPreferredSize(new Dimension(200, 20));
+			label.setSize(new Dimension(200, 20));
 			label.setFont(FONT_14);
 			fenetreRecherche.add(label);
+			gbc.anchor = GridBagConstraints.LINE_START;
+			gbc.gridx = 0;
+			gbc.gridy = i;
+			gbc.gridwidth=1;
+			gbc.gridheight=1;
+			gbc.weightx=0;
+			gbc.weighty=0;
+			gbc.insets = new Insets(5, 5, 0, 5);
+			container.add(label, gbc);
 
 			JComponent component = input.convert();
-			int width = fenetreRecherche.getWidth() - maxLabelWidth - 40;
-			if (input.getWidth() > 0) {
-				width = input.getWidth();
-			}
-			component.setBounds(maxLabelWidth + 5, 12 + i * 30, width, 30);
+			component.setSize(new Dimension(input.getWidth(), 30));
+			component.setPreferredSize(new Dimension(input.getWidth(), 30));
+			component.setMaximumSize(new Dimension(input.getWidth(), 30));
 			component.setName(input.getName());
-
 			component.setFont(FONT_14);
-			fenetreRecherche.add(component);
+			gbc.anchor = GridBagConstraints.LINE_START;
+			gbc.gridx = 1;
+			gbc.gridy = i;
+			gbc.gridwidth=1;
+			gbc.gridheight=1;
+			gbc.weightx=1;
+			gbc.weighty=1;
+			gbc.fill = GridBagConstraints.BOTH;
+			container.add(component, gbc);
 			fields.put(form.getInputs().get(i).getName(), component);
 
 		}
 
 		// Création du bouton Valider
-		
+
 		JButton annuler = new JButton("Annul.");
-		annuler.setBounds((maxWidth-170)/2, 40 + 40 * (form.size() - 1), 75, 25);
+		annuler.setSize(new Dimension(75, 25));
 		annuler.setBackground(new Color(248, 215, 218));
-		
-		JButton valider = new JButton("Valider");
-		valider.setBounds((maxWidth-170)/2+95, 40 + 40 * (form.size() - 1), 75, 25);
-		valider.setBackground(new Color(0, 195, 255));
-		
+		gbc.anchor = GridBagConstraints.LINE_END;
+		gbc.gridx = 0;
+		gbc.gridy = form.getInputs().size() + 1;
+		gbc.gridwidth=1;
+		gbc.gridheight=1;
+		gbc.fill = GridBagConstraints.NONE;
 		// Lorsqu'on clique sur le bouton Valider on lance un système pour attendre la
-		// saisie
-		// par l'utilisateur de la valeur demandée.
+		// saisie par l'utilisateur de la valeur demandée.
 		annuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				form.setValidated(true);
+				synchronized (Console.holder) {
 
-				synchronized (Launcher.holder) {
-
-					Launcher.holder.add(false);
-					Launcher.holder.notify();
+					Console.holder.add(false);
+					Console.holder.notify();
 				}
 				fenetreRecherche.setVisible(false);
 			}
 		});
+		container.add(annuler, gbc);
+
+		JButton valider = new JButton("Valider");
+		valider.setSize(new Dimension(75, 25));
+		valider.setBackground(new Color(0, 195, 255));
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.gridx = 1;
+		gbc.gridy = form.getInputs().size() + 1;
+		gbc.gridwidth=1;
+		gbc.gridheight=1;
+		gbc.fill=GridBagConstraints.NONE;
+		
 
 		// Lorsqu'on clique sur le bouton Valider on lance un système pour attendre la
 		// saisie
@@ -209,44 +244,45 @@ public class Console {
 		valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				synchronized (Launcher.holder) {
+				synchronized (Console.holder) {
+					form.setValidated(true);
 					for (String name : fields.keySet()) {
 						Input input = form.getInput(name);
 						input.setValue(fields.get(name));
 					}
-					if (formValidator==null || (formValidator!=null && formValidator.validate(form))) {
+					if (formValidator == null || (formValidator != null && formValidator.validate(form))) {
 						fenetreRecherche.setVisible(false);
-						Launcher.holder.add(true);
-						Launcher.holder.notify();
+						Console.holder.add(true);
+						Console.holder.notify();
 					}
 				}
-				
+
 			}
 		});
-		fenetreRecherche.add(annuler);
-		fenetreRecherche.add(valider);
+		container.add(valider, gbc);
 		fenetreRecherche.getRootPane().setDefaultButton(valider);
 		fenetreRecherche.setVisible(true);
 
-		synchronized (Launcher.holder) {
+		synchronized (Console.holder) {
 			// wait for input from field
-			while (Launcher.holder.isEmpty()) {
+			while (Console.holder.isEmpty()) {
 				try {
-					Launcher.holder.wait();
+					Console.holder.wait();
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
 			}
-			return Launcher.holder.remove(0);
+			return Console.holder.remove(0);
 		}
 	}
-	
-	/** Permet d'activer un formulaire SWING.
-	 * La méthode est synchrone, c'est à dire que la méthode ne rend la main que lorsque le
-	 * formateur a cliqué sur Valider (return true) ou Annuler (return false).
+
+	/**
+	 * Permet d'activer un formulaire SWING. La méthode est synchrone, c'est à dire
+	 * que la méthode ne rend la main que lorsque le formateur a cliqué sur Valider
+	 * (return true) ou Annuler (return false).
 	 * 
 	 * @param titreFenetre titre du formulaire
-	 * @param form formulaire
+	 * @param form         formulaire
 	 * @return boolean
 	 */
 	public boolean confirm(String titreFenetre, String question) {
@@ -283,25 +319,25 @@ public class Console {
 		fenetreRecherche.add(label);
 
 		// Création du bouton Valider
-		
+
 		JButton annuler = new JButton("Annul.");
-		annuler.setBounds((maxWidth-170)/2, 50, 75, 25);
+		annuler.setBounds((maxWidth - 170) / 2, 50, 75, 25);
 		annuler.setBackground(new Color(248, 215, 218));
-		
+
 		JButton valider = new JButton("Valider");
-		valider.setBounds((maxWidth-170)/2+95, 50, 75, 25);
+		valider.setBounds((maxWidth - 170) / 2 + 95, 50, 75, 25);
 		valider.setBackground(new Color(0, 195, 255));
-		
+
 		// Lorsqu'on clique sur le bouton Valider on lance un système pour attendre la
 		// saisie
 		// par l'utilisateur de la valeur demandée.
 		annuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				synchronized (Launcher.holder) {
+				synchronized (Console.holder) {
 
-					Launcher.holder.add(false);
-					Launcher.holder.notify();
+					Console.holder.add(false);
+					Console.holder.notify();
 				}
 				fenetreRecherche.setVisible(false);
 			}
@@ -313,10 +349,10 @@ public class Console {
 		valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				synchronized (Launcher.holder) {
-					Launcher.holder.add(true);
-					Launcher.holder.notify();
-					
+				synchronized (Console.holder) {
+					Console.holder.add(true);
+					Console.holder.notify();
+
 				}
 				fenetreRecherche.setVisible(false);
 			}
@@ -326,57 +362,56 @@ public class Console {
 		fenetreRecherche.getRootPane().setDefaultButton(valider);
 		fenetreRecherche.setVisible(true);
 
-		synchronized (Launcher.holder) {
+		synchronized (Console.holder) {
 			// wait for input from field
-			while (Launcher.holder.isEmpty()) {
+			while (Console.holder.isEmpty()) {
 				try {
-					Launcher.holder.wait();
+					Console.holder.wait();
 				} catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
 			}
-			return Launcher.holder.remove(0);
+			return Console.holder.remove(0);
 		}
 	}
-	
-	/** Permet d'activer un formulaire SWING.
-	 * La méthode est synchrone, c'est à dire que la méthode ne rend la main que lorsque le
-	 * formateur a cliqué sur Valider (return true) ou Annuler (return false).
+
+	/**
+	 * Permet d'activer un formulaire SWING. La méthode est synchrone, c'est à dire
+	 * que la méthode ne rend la main que lorsque le formateur a cliqué sur Valider
+	 * (return true) ou Annuler (return false).
 	 * 
 	 * @param titreFormulaire titre du formulaire
-	 * @param form formulaire
+	 * @param form            formulaire
 	 * @return boolean
 	 */
 	public void alert(String message) {
 
 		JFrame fenetre = new JFrame("Alerte");
-		
-		GridBagConstraints constraints = new GridBagConstraints(); 
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.insets.bottom = 10;
-        constraints.anchor = GridBagConstraints.CENTER;
-		
+
+		GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.insets.bottom = 10;
+		constraints.anchor = GridBagConstraints.CENTER;
+
 		fenetre.getContentPane().setBackground(new Color(248, 215, 218));
 		fenetre.getContentPane().setLayout(new GridBagLayout());
 		fenetre.setBounds(100, 100, 500, 120);
 		int x = Console.getX(fenetre);
 		int y = Console.getY(fenetre);
 		fenetre.setLocation(x, y);
-		
+
 		fenetre.setVisible(true);
-		
+
 		JLabel label = new JLabel(message);
 		label.setFont(FONT_14);
 		label.setForeground(new Color(114, 28, 36));
 //		label.setAlignmentX(Component.CENTER_ALIGNMENT);
 		fenetre.add(label, constraints);
-		
-		
 
 		JButton valider = new JButton("Fermer");
 		constraints.gridx = 0;
-        constraints.gridy = 2;
+		constraints.gridy = 2;
 		fenetre.add(valider, constraints);
 		valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -386,47 +421,49 @@ public class Console {
 		});
 	}
 
-	/** Affiche un texte
+	/**
+	 * Affiche un texte
+	 * 
 	 * @param text texte
 	 * @return Console
 	 */
 	public Console print(String text) {
-		
+
 		String textModifie = text;
-		
+
 		boolean startWithTag = false;
 		if (text.startsWith("<")) {
 			startWithTag = true;
 		}
-		
+
 		// Si le texte contient des images, on modifie les sources
 		if (text.contains("img") && text.contains("src")) {
 			Document doc = Jsoup.parse(text);
 			Elements elts = doc.getElementsByAttribute("src");
-			if (elts!=null && elts.size()>0) {
-				for (Element elt: elts) {
+			if (elts != null && elts.size() > 0) {
+				for (Element elt : elts) {
 					String value = elt.attr("src");
-					
+
 					URL url = getClass().getClassLoader().getResource(value);
-					if (url!=null) {
+					if (url != null) {
 						elt.attr("src", url.toString());
 					}
 				}
 			}
 			if (startWithTag) {
-				textModifie = doc.body().children().toString() +" " + doc.body().ownText();
-			}
-			else {
-				textModifie = doc.body().ownText()+" "+doc.body().children().toString();
+				textModifie = doc.body().children().toString() + " " + doc.body().ownText();
+			} else {
+				textModifie = doc.body().ownText() + " " + doc.body().children().toString();
 			}
 		}
-		
+		appendToPane(textModifie);
 		contentpane.append(textModifie);
-		afficheur.setText(contentpane.toString());
 		return this;
 	}
-
-	/** Affiche un texte HTML suivi d'un passage à la ligne
+	
+	/**
+	 * Affiche un texte HTML suivi d'un passage à la ligne
+	 * 
 	 * @param text texte
 	 * @return Console.
 	 */
@@ -434,24 +471,26 @@ public class Console {
 		return print(text).print("<br>");
 	}
 
-	/** Affiche un texte avec une couleur donnée ainsi que des attributs css au format suivant:
-	 * propriété1: valeur1; propriété2: valeur2;
+	/**
+	 * Affiche un texte avec une couleur donnée ainsi que des attributs css au
+	 * format suivant: propriété1: valeur1; propriété2: valeur2;
 	 * 
 	 * Le texte est ensuite suivi d'un passage à la ligne
 	 * 
-	 * @param text texte
+	 * @param text       texte
 	 * @param attributes attributs CSS
 	 * @return Console
 	 */
 	public Console println(String text, String... attributes) {
 		return println(HtmlUtils.toSpan(text, attributes));
 	}
-	
-	/** Affiche un texte avec une couleur donnée ainsi que des attributs css au format suivant:
-	 * propriété1: valeur1; propriété2: valeur2;
+
+	/**
+	 * Affiche un texte avec une couleur donnée ainsi que des attributs css au
+	 * format suivant: propriété1: valeur1; propriété2: valeur2;
 	 * 
-	 * @param text texte
-	 * @param c couleur
+	 * @param text       texte
+	 * @param c          couleur
 	 * @param attributes attributs CSS
 	 * @return Console
 	 */
@@ -459,13 +498,14 @@ public class Console {
 		return print(HtmlUtils.toSpan(text, c, attributes));
 	}
 
-	/** Affiche un texte avec une couleur donnée ainsi que des attributs css au format suivant:
-	 * propriété1: valeur1; propriété2: valeur2;
+	/**
+	 * Affiche un texte avec une couleur donnée ainsi que des attributs css au
+	 * format suivant: propriété1: valeur1; propriété2: valeur2;
 	 * 
 	 * Le texte est ensuite suivi d'un passage à la ligne
 	 * 
-	 * @param text texte
-	 * @param c couleur
+	 * @param text       texte
+	 * @param c          couleur
 	 * @param attributes attributs CSS
 	 * @return Console
 	 */
@@ -474,11 +514,61 @@ public class Console {
 	}
 
 	/**
+	 * Permet d'aligner sur une même ligne plusieurs éléments HTML (ex: image et
+	 * texte)
+	 * 
+	 * @param htmlElts éléments HTML à aligner verticalement
+	 * @return Console
+	 */
+	public Console print(String... htmlElts) {
+		StringBuilder htmlBuilder = new StringBuilder();
+		htmlBuilder.append("<table><tr>");
+		for (String texte : htmlElts) {
+			htmlBuilder.append("<td>").append(texte).append("</td>");
+		}
+		htmlBuilder.append("</tr></table>");
+		return println(htmlBuilder.toString());
+	}
+	
+	/** Permet d'afficher un objet
+	 * @param obj objet à afficher
+	 * @return {@link Console}
+	 */
+	public Console print(Object obj) {
+		return print(obj.toString());
+	}
+	
+	/** Permet d'afficher un objet suivi d'un retour à la ligne
+	 * @param obj objet à afficher
+	 * @return {@link Console}
+	 */
+	public Console println(Object obj) {
+		return print(obj).print("<br>");
+	}
+
+
+	/**
 	 * Efface le contenu de l'afficheur
 	 */
 	public void clear() {
 		contentpane = new StringBuilder();
 		afficheur.setText("");
+	}
+
+	/**
+	 * Ajoute du HTML dans le panneau
+	 * 
+	 * @param html html
+	 * @return Console
+	 */
+	protected Console appendToPane(String html) {
+		HTMLDocument doc = (HTMLDocument) afficheur.getStyledDocument();
+		try {
+			doc.insertAfterEnd(doc.getCharacterElement(doc.getLength()), html);
+		} catch (IOException | BadLocationException e) {
+			ErrorManager.manage(e.getMessage(), e);
+		}
+		return this;
 	}
 
 }

@@ -16,6 +16,9 @@ public class Form implements Iterable<Input> {
 	/** Liste des champs de saisie */
 	private List<Input> inputs = new ArrayList<>();
 	
+	/** validated */
+	private boolean validated;
+	
 	/** Retourne un champ de saisie à partir de son nom
 	 * @param name nom du champ
 	 * @return {@link Input}
@@ -45,7 +48,10 @@ public class Form implements Iterable<Input> {
 	 * @param name nom du champ de saisie
 	 * @return String
 	 */
-	public String getValue(String name) {
+	public <T> T getValue(String name) {
+		if (!isValidated()) {
+			ErrorManager.manage("Vous devez d'abord afficher et valider le formulaire (console.input) avant de récupérer les résultats.");
+		}
 		return getInput(name).getValue();
 	}
 
@@ -73,5 +79,19 @@ public class Form implements Iterable<Input> {
 	 */
 	public void setInputs(List<Input> inputs) {
 		this.inputs = inputs;
+	}
+
+	/** Getter
+	 * @return the validated
+	 */
+	public boolean isValidated() {
+		return validated;
+	}
+
+	/** Setter
+	 * @param validated the validated to set
+	 */
+	public void setValidated(boolean validated) {
+		this.validated = validated;
 	}
 }

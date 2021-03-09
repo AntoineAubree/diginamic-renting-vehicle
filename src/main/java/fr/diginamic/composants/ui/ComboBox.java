@@ -1,7 +1,9 @@
 package fr.diginamic.composants.ui;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -19,7 +21,7 @@ public class ComboBox extends Input {
 	private Selectable selectedItem;
 	
 	/** value */
-	private Long id;
+	private Integer id;
 	
 	/** Constructeur
 	 * @param label libellé
@@ -29,6 +31,7 @@ public class ComboBox extends Input {
 	public ComboBox(String label, String name, List<Selectable> selectables) {
 		super(label, name);
 		this.selectables = selectables;
+		setEditable(true);
 	}
 	
 	/** Constructeur
@@ -41,6 +44,7 @@ public class ComboBox extends Input {
 		super(label, name);
 		this.selectedItem = selectedItem;
 		this.selectables = selectables;
+		setEditable(true);
 	}
 	
 	@Override
@@ -49,19 +53,32 @@ public class ComboBox extends Input {
 		for (Selectable selectable: selectables) {
 			combobox.addItem(selectable);
 		}
-		combobox.setSelectedItem(selectedItem);
-		combobox.setEditable(true);
+		if (selectedItem!=null) {
+			combobox.setSelectedItem(selectedItem);
+		}
+		else {
+			combobox.setSelectedIndex(0);
+		}
+		combobox.setVisible(true);
+		combobox.setEditable(isEditable());
+		if (!isEditable()) {
+			combobox.setBackground(new Color(218, 243, 245));
+		}
 		return combobox;
 	}
 
 	@Override
-	public String getValue() {
-		return Long.toString(id);
+	public Selectable getValue() {
+		Optional<Selectable> opt = selectables.stream().filter(s->s.getId().equals(this.selectedItem.getId())).findFirst();
+		if (opt.isPresent()) {
+			return opt.get();
+		}
+		return null;
 	}
 	
 	@Override
 	public void setValue(JComponent component) {
-		this.id=((Selectable)((JComboBox<Selectable>)component).getSelectedItem()).getId();
+		this.selectedItem=(Selectable)((JComboBox<Selectable>)component).getSelectedItem();
 	}
 
 	@Override

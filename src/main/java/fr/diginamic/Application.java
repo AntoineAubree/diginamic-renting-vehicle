@@ -7,6 +7,8 @@ import fr.diginamic.ihm.AddVehicle;
 import fr.diginamic.ihm.DisplayBooking;
 import fr.diginamic.ihm.DisplayClient;
 import fr.diginamic.ihm.DisplayMake;
+import fr.diginamic.ihm.DisplayNotPayedBooking;
+import fr.diginamic.ihm.DisplayPayedBooking;
 import fr.diginamic.ihm.DisplayTypeVehicle;
 import fr.diginamic.ihm.DisplayVehicle;
 
@@ -42,17 +44,18 @@ public class Application extends AbstractApplication {
 		addMenu(2, "Client");
 		addMenu(3, "Réservation");
 
-		addMenuOption(1, "Affichage/gestion les véhicules", new DisplayVehicle());
-		addMenuOption(1, "Ajouter un véhicule", new AddVehicle());
+		addMenuOption(1, "Gestion les véhicules", new DisplayVehicle());
+		addMenuOption(1, "Ajout d'un véhicule", new AddVehicle());
 		addMenuOption(1, "Gestion des marques de véhicules", new DisplayMake());
 		addMenuOption(1, "Gestion des types de véhicules", new DisplayTypeVehicle());
 //		addMenuOption(1, "Gestion des modèles de véhicules", new AddVehicle());
 		
-		addMenuOption(2, "Affichage/gestion les clients", new DisplayClient());
-		addMenuOption(2, "Ajouter un client", new AddClient());
+		addMenuOption(2, "Gestion les clients", new DisplayClient());
+		addMenuOption(2, "Ajout d'un client", new AddClient());
 	
-		addMenuOption(3, "Affichage/gestion des réservations en cours", new DisplayBooking());
-//		addMenuOption(3, "Affichage des anciennes réservations", new DisplayClient());
-		addMenuOption(3, "Ajouter une réservation", new AddBooking());
+		addMenuOption(3, "Gestion des réservations en cours", new DisplayBooking());
+		addMenuOption(3, "Gestion des résevations non payées", new DisplayNotPayedBooking());
+		addMenuOption(3, "Affichage des anciennes réservations", new DisplayPayedBooking());
+		addMenuOption(3, "Ajout d'une réservation", new AddBooking());
 	}
 }

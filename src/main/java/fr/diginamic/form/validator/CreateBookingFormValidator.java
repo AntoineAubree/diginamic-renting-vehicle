@@ -34,7 +34,8 @@ public class CreateBookingFormValidator extends FormValidator {
 			return false;
 		}
 		
-		String comment = form.getValue("comment").trim();
+		String comment = form.getValue("comment");
+		comment = comment.trim();
 		if (comment.length() > 400) {
 			console.alert("Le commentaire doit contenir moins de 400 caractères");
 			return false;

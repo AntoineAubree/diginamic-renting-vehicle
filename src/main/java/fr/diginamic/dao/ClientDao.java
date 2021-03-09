@@ -19,7 +19,7 @@ public class ClientDao extends AbstractDao {
 		this.em = em;
 	}
 
-	public Client findById(Long id) {
+	public Client findById(Integer id) {
 		Client client = em.find(Client.class, id);
 		return client;
 	}

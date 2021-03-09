@@ -18,7 +18,8 @@ public class TypeVehicleFormValidator extends FormValidator {
 
 	@Override
 	public boolean validate(Form form) {
-		String name = form.getValue("name").trim();
+		String name = form.getValue("name");
+		name = name.trim();
 		if (name.isEmpty() || name.length() > 50) {
 			console.alert("Le nom du type de véhicule est obigatoire (50 caractères maximum)");
 			return false;
@@ -29,7 +30,8 @@ public class TypeVehicleFormValidator extends FormValidator {
 			return false;
 		}
 		
-		String dailyPrice = form.getValue("dailyPrice").trim();
+		String dailyPrice = form.getValue("dailyPrice");
+		dailyPrice = dailyPrice.trim();
 		if (dailyPrice.isEmpty()) {
 			console.alert("Le tarif journalier est obligatoire");
 			return false;
@@ -38,7 +40,8 @@ public class TypeVehicleFormValidator extends FormValidator {
 			return false;
 		}
 		
-		String guarantee = form.getValue("guarantee").trim();
+		String guarantee = form.getValue("guarantee");
+		guarantee = guarantee.trim();
 		if (guarantee.isEmpty()) {
 			console.alert("Le montant de la caution est obligatoire");
 			return false;

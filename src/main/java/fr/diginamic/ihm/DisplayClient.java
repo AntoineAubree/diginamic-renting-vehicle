@@ -25,12 +25,30 @@ public class DisplayClient extends MenuService {
 	public void traitement() {
 		List<Client> clients = clientDao.findAll();
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Liste des clients</center></h1>");
+		console.println("<h1 class='bg-green'><center>Gestion des clients</center></h1>");
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td><center>Client</center></td><td><center>Adresse</center></td><td><center>Permis de conduire</center></td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-				+ "</table>"
-				+ "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>Nom</td><td>Prénom</td><td>Téléphone</td><td>Eamil</td><td>Code postal</td><td>Ville</td><td>Numéro</td><td>Libellé de voie</td><td>Type</td><td>Numéro</td><td>Date d'obtention</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
+						+ "<tr class='bg-green'>"
+							+ "<td width='450px'><center>Client</center></td>"
+							+ "<td width='400px'><center>Adresse</center></td>"
+							+ "<td width='400px'><center>Permis de conduire</center></td>"
+						+ "</tr>"
+					+ "</table>"
+					+ "<table cellspacing=0>"
+						+ "<tr class='bg-green'>"
+							+ "<td width='100px'>Nom</td>"
+							+ "<td width='100px'>Prénom</td>"
+							+ "<td width='100px'>Téléphone</td>"
+							+ "<td width='150px'>Eamil</td>"
+							+ "<td width='100px'>Code postal</td>"
+							+ "<td width='100px'>Ville</td>"
+							+ "<td width='50px'>Numéro</td>"
+							+ "<td width='150px'>Libellé de voie</td>"
+							+ "<td width='100px'>Type</td>"
+							+ "<td width='150px'>Numéro</td>"
+							+ "<td width='150px'>Date d'obtention</td>"
+							+ "<td width='100px'>Modifier</td>"
+							+ "<td width='100px'>Supprimer</td>"
+						+ "</tr>";
 		for (Client client : clients) {
 			html += "<tr>" 
 					+ "  <td width='100px'>" + client.getLastname() + "</td>" 
@@ -49,10 +67,10 @@ public class DisplayClient extends MenuService {
 				+ "</tr>";
 		}
 		html += "</table>";
-		console.print(html);
+		console.println(html);
 	}
 	
-	protected void updateClient(Long id) {
+	protected void updateClient(Integer id) {
 		List<Selectable> drivingLicenceSelectable = new ArrayList<>();
 		for (CategoryDrivingLicence categoryDrivingLicence : CategoryDrivingLicence.values()) {
 			drivingLicenceSelectable.add(categoryDrivingLicence);
@@ -76,22 +94,30 @@ public class DisplayClient extends MenuService {
 		validator.setEmail(client.getEmail());
 		boolean valide = console.input("Saisissez les informations du client", form, validator);
 		if (valide) {
-			client.setFirstname(form.getValue("firstname").trim());
-			client.setLastname(form.getValue("lastname").trim());
-			client.setPhoneNumber(form.getValue("phoneNumber").trim());
-			client.setEmail(form.getValue("email").trim());
+			String firstname = form.getValue("firstname");
+			client.setFirstname(firstname.trim());
+			String lastname = form.getValue("lastname");
+			client.setLastname(lastname.trim());
+			String phoneNumber = form.getValue("phoneNumber");
+			client.setPhoneNumber(phoneNumber.trim());
+			String email = form.getValue("email");
+			client.setEmail(email.trim());
 			
 			Address address = new Address();
-			address.setStreetNumber(Integer.parseInt(form.getValue("streetNumber").trim()));
-			address.setStreetWording(form.getValue("streetWording").trim());
-			address.setPostcode(form.getValue("postCode").trim());
-			address.setCity(form.getValue("city").trim());
+			String streetNumber = form.getValue("streetNumber");
+			address.setStreetNumber(Integer.parseInt(streetNumber.trim()));
+			String streetWording = form.getValue("streetWording");
+			address.setStreetWording(streetWording.trim());
+			String postCode = form.getValue("postCode");
+			address.setPostcode(postCode.trim());
+			String city = form.getValue("city");
+			address.setCity(city.trim());
 			client.setAddress(address);
 			
 			DrivingLicence drivingLicence = new DrivingLicence();
-			CategoryDrivingLicence categoryDrivingLicence = CategoryDrivingLicence.getById(Long.parseLong(form.getValue("categoryDrivingLicence")));
-			drivingLicence.setCategoryDrivingLicence(categoryDrivingLicence);
-			drivingLicence.setDrivingLicenceNumber(Integer.parseInt(form.getValue("drivingLicenceNumber").trim()));
+			drivingLicence.setCategoryDrivingLicence(form.getValue("categoryDrivingLicence"));
+			String drivingLicenceNumber = form.getValue("drivingLicenceNumber");
+			drivingLicence.setDrivingLicenceNumber(Integer.parseInt(drivingLicenceNumber.trim()));
 			drivingLicence.setObteningDate(LocalDateUtils.getDate(form.getValue("obteningDate")));
 			client.setDrivingLicence(drivingLicence);
 			
@@ -101,7 +127,7 @@ public class DisplayClient extends MenuService {
 		}
 	}
 
-	protected void deleteClient(Long id) {
+	protected void deleteClient(Integer id) {
 		Client client = clientDao.findById(id);
 		if (client.getBooginks().isEmpty()) {
 			clientDao.delete(client);

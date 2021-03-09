@@ -2,6 +2,7 @@ package fr.diginamic.composants;
 
 import java.util.concurrent.Callable;
 
+import fr.diginamic.composants.error.ErrorManager;
 import fr.diginamic.composants.reflect.ReflectUtils;
 
 /** Traitement asynchrone permettant d'exécuter une chaine d'invocation du type: maClasse.maMethode(Long)
@@ -21,8 +22,14 @@ public class TraitementInvocation implements Callable<Void> {
 	}
 
 	@Override
-	public Void call() throws Exception {
-		ReflectUtils.invoke(invocation);
+	public Void call() {
+		try {
+			ReflectUtils.invoke(invocation);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			ErrorManager.manage(e.getMessage(), e);
+		}
 		return null;
 	}
 

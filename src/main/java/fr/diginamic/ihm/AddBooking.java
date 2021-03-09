@@ -31,18 +31,36 @@ public class AddBooking extends MenuService {
 
 	@Override
 	public void traitement() {
-		selectClient(0L);
+		selectClient(0);
 	}
 
-	protected void selectClient(Long id) {
+	protected void selectClient(Integer id) {
 		List<Client> clients = clientDao.findAll();
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Créer une réservation</center></h1>");
-		console.print("<h2 class='bg-green'><center>Sélectionnez le client</center></h2>");
+		console.println("<h1 class='bg-green'><center>Créer une réservation</center></h1>");
+		console.println("<h2 class='bg-green'><center>Sélectionnez le client</center></h2>");
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td><center>Client</center></td><td><center>Adresse</center></td><td><center>Permis de conduire</center></td><td>&nbsp;</td><td>&nbsp;</td></tr>"
-				+ "</table>" + "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>&nbsp;</td><td>Nom</td><td>Prénom</td><td>Téléphone</td><td>Eamil</td><td>Code postal</td><td>Ville</td><td>Numéro</td><td>Libellé de voie</td><td>Type</td><td>Numéro</td><td>Date d'obtention</td></tr>";
+				+ "<tr class='bg-green'>"
+					+ "<td width='450px'><center>Client</center></td>"
+					+ "<td width='400px'><center>Adresse</center></td>"
+					+ "<td width='400px'><center>Permis de conduire</center></td>"
+				+ "</tr>"
+			+ "</table>"
+			+ "<table cellspacing=0>"
+				+ "<tr class='bg-green'>"
+					+ "<td>Sélectionner</td>"
+					+ "<td width='100px'>Nom</td>"
+					+ "<td width='100px'>Prénom</td>"
+					+ "<td width='100px'>Téléphone</td>"
+					+ "<td width='150px'>Eamil</td>"
+					+ "<td width='100px'>Code postal</td>"
+					+ "<td width='100px'>Ville</td>"
+					+ "<td width='50px'>Numéro</td>"
+					+ "<td width='150px'>Libellé de voie</td>"
+					+ "<td width='100px'>Type</td>"
+					+ "<td width='150px'>Numéro</td>"
+					+ "<td width='150px'>Date d'obtention</td>"
+				+ "</tr>";
 		for (Client client : clients) {
 			html += "<tr>" 
 					+ "  <td><a class='btn-green' href='selectVehicle(" + client.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
@@ -60,10 +78,10 @@ public class AddBooking extends MenuService {
 				+ "</tr>";
 		}
 		html += "</table>";
-		console.print(html);
+		console.println(html);
 	}
 
-	protected void selectVehicle(Long id) {
+	protected void selectVehicle(Integer id) {
 		AddBooking.client = clientDao.findById(id);
 		List<Vehicle> vehicles = new ArrayList<>();
 		if (AddBooking.client.getDrivingLicence().getCategoryDrivingLicence().equals(CategoryDrivingLicence.C)
@@ -73,10 +91,10 @@ public class AddBooking extends MenuService {
 			vehicles = vehicleDao.findAllCarAvailable();
 		}
 		console.clear();
-		console.print("<h1 class='bg-green'><center>Créer une réservation</center></h1>");
-		console.print("<h2 class='bg-green'><center>Sélectionnez le véhicule</center></h2>");
+		console.println("<h1 class='bg-green'><center>Créer une réservation</center></h1>");
+		console.println("<h2 class='bg-green'><center>Sélectionnez le véhicule</center></h2>");
 		String html = "<table cellspacing=0>"
-				+ "<tr class='bg-green'><td>&nbsp;</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td><td>Plaque d'immatriculation</td><td>kilométrage</td><td>Nombre de places / volume</td></tr>";
+				+ "<tr class='bg-green'><td>Sélectionner</td><td>Catégorie</td><td>Type</td><td>Marque</td><td>Modèle</td><td>Plaque d'immatriculation</td><td>kilométrage</td><td>Nombre de places / volume</td></tr>";
 		for (Vehicle vehicle : vehicles) {
 			html += "<tr>" + "  <td><a class='btn-green' href='createBooking(" + vehicle.getId() + ")'><img width=25 src='images/plus-green.png'></a></td>" 
 					+ "  <td width='100px'>" + vehicle.getModel().getCategory() + "</td>" 
@@ -95,10 +113,10 @@ public class AddBooking extends MenuService {
 			html += "</tr>";
 		}
 		html += "</table>";
-		console.print(html);
+		console.println(html);
 	}
 	
-	protected void createBooking(Long id) {
+	protected void createBooking(Integer id) {
 		AddBooking.vehicle = vehicleDao.findById(id);
 		Form form = new Form();
 		form.addInput(new DateField("Date de début de réservation:", "startDate"));
@@ -110,7 +128,8 @@ public class AddBooking extends MenuService {
 			Booking booking = new Booking();
 			booking.setStartDate(LocalDateUtils.getDate(form.getValue("startDate")));
 			booking.setEstimatedFinalDate(LocalDateUtils.getDate(form.getValue("estimatedFinalDate")));
-			booking.setComment(form.getValue("comment").trim());
+			String comment = form.getValue("comment");
+			booking.setComment(comment.trim());
 			booking.setStartMileage(AddBooking.vehicle.getMileage());
 			booking.setClient(AddBooking.client);
 			booking.setVehicle(AddBooking.vehicle);

@@ -11,24 +11,17 @@ import fr.diginamic.composants.ui.Selectable;
  */
 public enum CategoryVehicle implements Selectable {
 
-	CAR(1L, "Voiture"), TRUCK(2L, "Camion");
+	CAR(1, "Voiture"), TRUCK(2, "Camion");
 
-	private Long id;
+	private int id;
 	private String wording;
 
-	private CategoryVehicle() {
-	}
-
-	private CategoryVehicle(String wording) {
-		this.wording = wording;
-	}
-
-	private CategoryVehicle(Long id, String wording) {
+	private CategoryVehicle(int id, String wording) {
 		this.id = id;
 		this.wording = wording;
 	}
 	
-	public static CategoryVehicle getById(Long id) {
+	public static CategoryVehicle getById(int id) {
 		for (CategoryVehicle categoryVehicle : CategoryVehicle.values()) {
 			if (categoryVehicle.getId() == id) {
 				return categoryVehicle;
@@ -42,7 +35,7 @@ public enum CategoryVehicle implements Selectable {
 	}
 
 	@Override
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
